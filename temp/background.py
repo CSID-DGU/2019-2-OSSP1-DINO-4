@@ -4,8 +4,8 @@ import pygame
 class background:
 
     def __init__(self,width,height):
-        self.width=width
-        self.height=height
+        self.width=width #800
+        self.height=height #600
 
     def __call__(self):
         print (" ")
@@ -30,57 +30,61 @@ class background:
         for x in range(self.width//tile1.get_width()+1):
             screen.blit(tile1,(x*100,0))
         for x in range(self.width//tile1.get_width()+1):
-            screen.blit(tile1,(x*100,609))
+            screen.blit(tile1,(x*100,570))
 
-
-        screen.blit(tile1,(900,450))
-        screen.blit(water,(900,43))
-        screen.blit(tile1,(800,480))
-        screen.blit(tile1,(800,480))
-        screen.blit(tile1,(700,520))
-
-        screen.blit(tile1,(0,530))
-        screen.blit(tile1,(100,530))
+        #수정완료
+        screen.blit(tile1,(0,490))
+        screen.blit(tile1,(100,490))
         screen.blit(tile1,(200,490))
-        screen.blit(tile1,(300,490))
-        screen.blit(tile1,(300,490))
+        screen.blit(tile1,(300,470))
         screen.blit(tile1,(400,450))
 
-        screen.blit(tileup,(470,350))
+
+        #수정 완료
+        screen.blit(tile1,(700,480))
+        screen.blit(tile1,(800,480))
+
+        #수정완료
+        screen.blit(tileup,(470,350))#
         screen.blit(tile1,(470,350))
         screen.blit(gray,(470,250))
-        screen.blit(tileup,(550,250))
+        screen.blit(tileup,(540,250))
 
-        screen.blit(tile1,(0,390))
-        screen.blit(tile1,(100,360))
+        #수정중
+        screen.blit(tile1,(0,380))
+        screen.blit(tile1,(100,350))
         screen.blit(tile1,(200,350))
         screen.blit(tileup,(270,250))
         screen.blit(tile1,(270,250))
-        screen.blit(redButton,(0,360))
+        screen.blit(redButton,(0,350))
         screen.blit(brick,(300,275))
         screen.blit(tileup,(370,250))
         screen.blit(tile1,(370,250))
 
-        screen.blit(tile1,(700,400))
-        screen.blit(water,(700,380))
+        #수정 완료
+        screen.blit(tile1,(600,420))
+        screen.blit(water,(600,400))
 
-        screen.blit(tile1,(900,320))
-        screen.blit(water,(900,300))
+
+        #수정 완료
         screen.blit(tile1,(800,320))
         screen.blit(water,(800,300))
-        screen.blit(tileup,(770,250))
+        screen.blit(tile1,(700,320))
+        screen.blit(water,(700,300))
+        screen.blit(tileup,(670,250))
 
-
-        screen.blit(tile1,(350,150))
-        screen.blit(tile1,(250,150))
-        screen.blit(tileup,(450,50))
-        screen.blit(tileup,(450,200))
+        #수정완료
+        screen.blit(tile1,(350,110))
+        screen.blit(tile1,(250,110))
+        screen.blit(tileup,(450,30))#
+        screen.blit(tileup,(450,180))#
         screen.blit(tileup,(450,150))
         screen.blit(tileup,(450,50))
-        screen.blit(tile1,(0,230))
-        screen.blit(tile1,(100,230))
+        screen.blit(tile1,(0,200))
+        screen.blit(tile1,(100,200))
 
+        #수정 완료
         screen.blit(tile1,(600,100))
         screen.blit(tile1,(700,100))
         screen.blit(redButton,(620,70))
-        screen.blit(tile1,(560,170))
+        screen.blit(tile1,(520,180))
