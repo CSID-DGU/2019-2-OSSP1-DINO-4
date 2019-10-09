@@ -1,4 +1,3 @@
-
 import pygame
 import background
 from background import *
@@ -35,7 +34,3 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit(0)
-
-if __name__=="__main__":
-    g=Game()
-    g.main()

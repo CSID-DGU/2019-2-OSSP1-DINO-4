@@ -1,20 +1,29 @@
 import pygame
 from const import *
-#added comment
+
 FRAME=0
+
 class Player:
     def __init__(self,path,position):
+        #setting
         self.user_position=[position[0],position[1]]
         self.user_image=[]
         self.load_sprites(path)    #path 경로 이미지 불러옴
-        self.left=False #캐릭터가 왼쪽으로 움직이고 있는지 저장
         self.event_list=[False for i in range(EVENT)]
 
+        #for walk
+        self.left=False #캐릭터가 왼쪽으로 움직이고 있는지 저장
+
+        #for jumping
+        self.isjump=False
+        self.jumpCount=8
+ 
+
     def load_sprites(self,path):
+
         #서있음
-        
-        idle_stand_right=[pygame.image.load("girl/stand.png")]
-        idle_stand_right=[pygame.transform.scale(i,(50,50))
+        idle_stand_right=[pygame.image.load("girl/stand.png").convert_alpha()]
+        idle_stand_right=[pygame.transform.scale(i,(player_width,player_height))
                         for i in idle_stand_right]
         idle_stand_left=[pygame.transform.flip(idle_stand_right[0],True,False)]
 
@@ -31,24 +40,22 @@ class Player:
         self.user_image.append(idle_stand_left)
         self.user_image.append(idle_walk_right)
         self.user_image.append(idle_walk_left)
-        #self.user_image.append(idle_jump)
-
-
 
     def EventHandler(self):
         pressed = pygame.key.get_pressed()
         self.event_list = [False for i in range(EVENT)]
-
-        if pressed[pygame.K_RIGHT]:
+        
+        if pressed[pygame.K_RIGHT] and self.user_position[0]<WIDTH-3-player_width:
             self.user_position[0] += 3
             self.event_list[WALKRIGHT] = True
             self.left = False
 
-        elif pressed[pygame.K_LEFT]:
+        elif pressed[pygame.K_LEFT] and self.user_position[0]>3:
             self.user_position[0] -= 3
             self.event_list[WALKLEFT] = True
             self.left = True
 
+        
         else:
             if self.left:
                 self.event_list[LEFT] = True
@@ -57,7 +64,20 @@ class Player:
                 self.event_list[RIGHT] = True
                 self.event_list[LEFT] = False
 
+        #jump
+        if not(self.isjump):
+            if pressed[pygame.K_SPACE]:
+                self.isjump=True
+        else:
+            if self.jumpCount>=-8:
+                self.user_position[1]-=(self.jumpCount*abs(self.jumpCount))*0.5
+                self.jumpCount-=1
+            else:
+                self.jumpCount=8
+                self.isjump=False
 
+
+        
 
     def update(self, screen):
         global FRAME
