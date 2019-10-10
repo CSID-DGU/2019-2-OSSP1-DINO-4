@@ -7,16 +7,37 @@ from const import *
 FRAME=0
 
 class Platform(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h,case):
         super().__init__()
-        self.image = pygame.Surface((w, h))
+        if case==1:
+            self.image=pygame.image.load("tile/platform_tile_002.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(100,30))
+        elif case==2:
+            self.image=pygame.image.load("tile/platform_tile_009.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(100,60))
+        elif case==3:
+            self.image=pygame.image.load("tile/platform_tile_032.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(100,20))
+        elif case==4:
+            self.image=pygame.image.load("tile/platform_tile_005.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(30,100))
+        elif case==5:
+            self.image=pygame.image.load("tile/platform_tile_021.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(70,70))
+        elif case==6:
+            self.image=pygame.image.load("tile/platform_tile_016.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(100,30))
+        elif case==7:
+            self.image=pygame.image.load("tile/platform_tile_038.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(30,30))
+    
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
 class Game:
     def __init__(self):
-        self.width=800
+        self.width=900
         self.height=600
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
@@ -46,7 +67,7 @@ class Game:
         self.platforms=pygame.sprite.Group()
 
         pygame.init()
-        self.player1=Player((500,300),self)
+        self.player1=Player((self.width/2,self.height/2),self)
         self.all_sprites.add(self.player1)
 
         for plat in PlatformList:
