@@ -10,21 +10,20 @@ class background:
     def __call__(self):
         print (" ")
 
-
     def background(self,screen):
-        tile1=pygame.image.load("tile/platform_tile_002.png")
+        tile1=pygame.image.load("tile/platform_tile_002.png").convert_alpha()
         tile1=pygame.transform.scale(tile1,(100,30))
-        tile2=pygame.image.load("tile/platform_tile_009.png")
+        tile2=pygame.image.load("tile/platform_tile_009.png").convert_alpha()
         tile2=pygame.transform.scale(tile2,(100,60))
-        water=pygame.image.load("tile/platform_tile_032.png")
+        water=pygame.image.load("tile/platform_tile_032.png").convert_alpha()
         water=pygame.transform.scale(water,(100,20))
-        tileup=pygame.image.load("tile/platform_tile_005.png")
+        tileup=pygame.image.load("tile/platform_tile_005.png").convert_alpha()
         tileup=pygame.transform.scale(tileup,(30,100))
-        brick=pygame.image.load("tile/platform_tile_021.png")
+        brick=pygame.image.load("tile/platform_tile_021.png").convert_alpha()
         brick=pygame.transform.scale(brick,(70,70))
-        gray=pygame.image.load("tile/platform_tile_016.png")
+        gray=pygame.image.load("tile/platform_tile_016.png").convert_alpha()
         gray=pygame.transform.scale(gray,(100,30))
-        redButton=pygame.image.load("tile/platform_tile_038.png")
+        redButton=pygame.image.load("tile/platform_tile_038.png").convert_alpha()
         redButton=pygame.transform.scale(redButton,(30,30))
 
         for x in range(self.width//tile1.get_width()+1):
@@ -45,7 +44,7 @@ class background:
         screen.blit(tile1,(800,480))
 
         #수정완료
-        screen.blit(tileup,(470,350))#
+        screen.blit(tileup,(470,350))
         screen.blit(tile1,(470,350))
         screen.blit(gray,(470,250))
         screen.blit(tileup,(540,250))
