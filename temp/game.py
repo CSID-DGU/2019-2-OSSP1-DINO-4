@@ -16,12 +16,14 @@ class Game:
 
     def main(self):
         global FRAME
+
         pygame.init()
 
         rect=self.screen.get_rect()
         player1=Player("girl/",(100,520))
         background_=background(self.width,self.height)
         item_=item(self.width,self.height)
+        #trap_=trap(self.width,self.height)
 
         while True:
             time=self.clock.tick(60)
@@ -31,6 +33,8 @@ class Game:
             player1.update(self.screen)
             background_.background(self.screen)
             item_.item(self.screen)
+            #trap_.trap(self.screen)
+
             pygame.display.flip()
 
             for event in pygame.event.get():
