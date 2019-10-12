@@ -1,5 +1,6 @@
 import pygame
 from item import *
+from trap import *
 from background import *
 from player import *
 from const import *
@@ -30,7 +31,7 @@ class Platform(pygame.sprite.Sprite):
         elif case==7:
             self.image=pygame.image.load("tile/platform_tile_038.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(30,30))
-    
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -63,11 +64,8 @@ class Game:
 
     def main(self):
         global FRAME
-<<<<<<< HEAD
-=======
         self.all_sprites=pygame.sprite.Group()
         self.platforms=pygame.sprite.Group()
->>>>>>> character
 
         pygame.init()
         self.player1=Player((self.width/2,self.height/2),self)
@@ -80,28 +78,27 @@ class Game:
 
         background_=background(self.width,self.height)
         item_=item(self.width,self.height)
-        #trap_=trap(self.width,self.height)
+        trap_=trap(self.width,self.height)
 
         while True:
             time=self.clock.tick(60)
             FRAME+=1
             self.screen.fill((255,193,158))
             background_.background(self.screen)
-<<<<<<< HEAD
             item_.item(self.screen)
-            #trap_.trap(self.screen)
-=======
+            trap_.trap(self.screen)
+
 
             self.event()
             self.all_sprites.update()
             if self.player1.rect.right>WIDTH:
                 player1.rect.right=WIDTH
-            
+
             if self.player1.rect.left<0:
                 player1.rect.left=0
 
             self.all_sprites.draw(self.screen)
->>>>>>> character
+
 
             pygame.display.flip()
 
@@ -109,4 +106,3 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit(0)
-
