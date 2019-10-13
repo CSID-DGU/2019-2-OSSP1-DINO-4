@@ -80,12 +80,14 @@ class Game:
         trap1=trap(self)
 
         background_=background(self.width,self.height)
+        item_=item(self.width,self.height)
         
         while True:
             time=self.clock.tick(60)
             FRAME+=1
             self.screen.fill((255,193,158))
             background_.background(self.screen)
+            item_.item(self.screen)
 
             self.event()
             self.all_sprites.update()
