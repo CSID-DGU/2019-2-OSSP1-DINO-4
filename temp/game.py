@@ -7,6 +7,7 @@ from trap import *
 
 FRAME=0
 
+#배경 벽 불러옴
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h,case):
         super().__init__()
@@ -43,7 +44,9 @@ class Game:
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
         self.fire_rect=[530,40]
+        self.playing=True
 
+    #key 입력에 따른 이벤트처리
     def event(self):
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
@@ -65,38 +68,49 @@ class Game:
 
     def main(self):
         global FRAME
+        #sprite 그룹 생성
         self.all_sprites=pygame.sprite.Group()
         self.platforms=pygame.sprite.Group()
+        self.player_group=pygame.sprite.Group()
 
         pygame.init()
+
+        #sprite 그룹에 sprite 추가
         self.player1=Player((self.width/2,self.height/2),self)
         self.all_sprites.add(self.player1)
+        self.player_group.add(self.player1)
 
+
+        #배경 벽 불러옴
         for plat in PlatformList:
             p=Platform(*plat)
             self.all_sprites.add(p)
             self.platforms.add(p)
         
+        #초기화
         trap1=trap(self)
-
         background_=background(self.width,self.height)
-        item_=item(self.width,self.height)
+        item_=item()
         
         while True:
+            #settings
             time=self.clock.tick(60)
             FRAME+=1
             self.screen.fill((255,193,158))
+
+            #배경 그림
             background_.background(self.screen)
-            item_.item(self.screen)
+            item_.item_display(self.screen)
+            trap1.trap_draw(self.screen,self.fire_rect)
+
 
             self.event()
             self.all_sprites.update()
 
-            trap1.trap_draw(self.screen,self.fire_rect)
 
+            #플레이어가 창 밖으로 나가지 못하게
             if self.player1.rect.right>WIDTH:
                 self.player1.rect.right=WIDTH
-            
             if self.player1.rect.left<0:
                 self.player1.rect.left=0
 

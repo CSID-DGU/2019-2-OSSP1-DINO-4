@@ -1,22 +1,21 @@
 import pygame
+from const import *
 
 class item:
-
-    def __init__(self,width,height):
-        self.width=width;
-        self.height=height;
+    def __init__(self):
+        self.width=WIDTH
+        self.height=HEIGHT
 
     def __call__(self):
         print (" ")
 
-    def item(self,screen):
+    def item_display(self,screen):
         red_potion=pygame.image.load("tile/red-potion.png")
         blue_potion=pygame.image.load("tile/blue-potion.png")
 
-
-        #바닥 맨 아래
-        screen.blit(red_potion,(50,550))
-        screen.blit(blue_potion,(30,550))
+        #아이템 표시
+        screen.blit(red_potion,(50,530))
+        screen.blit(blue_potion,(30,530))
 
         screen.blit(blue_potion,(30,460))
 
