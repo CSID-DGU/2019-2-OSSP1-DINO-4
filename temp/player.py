@@ -3,26 +3,28 @@ from const import *
 
 FRAME=0
 
-WHITE=(255,255,255)
-
 class Player(pygame.sprite.Sprite):
     def __init__(self,position,game):
         #setting
         super().__init__()
+        self.game=game
 
         #load image
         self.user_image_left=[]
         self.user_image_right=[]
         self.load_image()
-
-        self.game=game
-
-        #self.rect
         self.image=pygame.image.load("girl/girl-11.png").convert_alpha()
         self.image=pygame.transform.scale(self.image,(50,50))
+
+        #self.mask
+        self.mask=pygame.mask.from_surface(self.image)
+        
+        #self.rect
         self.rect=self.image.get_rect()
         self.rect.x=100
         self.rect.y=50
+
+        #가속도[x의 가속도,y의 가속도]
         self.vel=[0,0]
 
     
@@ -49,6 +51,7 @@ class Player(pygame.sprite.Sprite):
             self.vel[1]=HEIGHT-self.rect.height
 
     def jump(self):
+        #캐릭터와 배경과의 충돌 검사
         self.rect[1]+=2
         hit_list=pygame.sprite.spritecollide(self,self.game.platforms,False)
         self.rect[1]-=0.1
@@ -56,15 +59,18 @@ class Player(pygame.sprite.Sprite):
         if len(hit_list)>0 or self.rect.bottom>=HEIGHT:
             self.vel[1]-=10
 
+    #왼쪽으로 움직인다(x의 가속도 -6)
     def go_left(self):
         #FRAME+=1
         #self.image=user_image_left[FRAME%10]
         self.vel[0]-=6
 
+    #오른쪽으로 움직인다(x의 가속도 +6)
     def go_right(self):
         #self.image=user_image_right[FRAME%10]
         self.vel[0]+=6
     
+    #멈춘다(x의 가속도 0)
     def stop(self):
         self.vel[0]=0
 
