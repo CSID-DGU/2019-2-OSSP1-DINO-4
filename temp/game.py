@@ -4,6 +4,7 @@ from player import *
 from const import *
 from item import *
 from trap import *
+from shot import *
 
 FRAME=0
 
@@ -44,7 +45,6 @@ class Game:
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
         self.fire_rect=[530,40]
-        self.playing=True
 
     #key 입력에 따른 이벤트처리
     def event(self):
@@ -54,8 +54,11 @@ class Game:
                     self.playing=False
                 self.running=False
             if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_SPACE:
+                    self.shot_.shooting_setting(self.player1.rect.x+30,self.player1.rect.y+10)
                 if event.key==pygame.K_UP:
                     self.player1.jump()
+                    print(2)
                 if event.key==pygame.K_LEFT:
                     self.player1.go_left()
                 if event.key==pygame.K_RIGHT:
@@ -65,6 +68,7 @@ class Game:
                     self.player1.stop()
                 if event.key==pygame.K_RIGHT and self.player1.vel[0]>0:
                     self.player1.stop()
+
 
     def main(self):
         global FRAME
@@ -91,7 +95,8 @@ class Game:
         trap1=trap(self)
         background_=background(self.width,self.height)
         item_=item()
-        
+        self.shot_=shot(self.screen,self)
+
         while True:
             #settings
             time=self.clock.tick(60)
@@ -102,7 +107,7 @@ class Game:
             background_.background(self.screen)
             item_.item_display(self.screen)
             trap1.trap_draw(self.screen,self.fire_rect)
-
+            self.shot_.shooting()
 
             self.event()
             self.all_sprites.update()
