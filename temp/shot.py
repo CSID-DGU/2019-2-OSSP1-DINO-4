@@ -47,3 +47,11 @@ class shot(pygame.sprite.Sprite):
                 self.screen.blit(self.shot_image,(self.rect.x,self.rect.y))
                 self.rect.x+=self.speed
         
+    def shoot_dino(self,game):
+        hits=pygame.sprite.spritecollide(self,self.game.dino_group,False,pygame.sprite.collide_mask)
+
+        if hits:
+            print(1)
+            self.bullet_state="ready"
+            game.DINO_alive=False
+            
