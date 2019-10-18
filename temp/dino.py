@@ -57,8 +57,12 @@ class Dino(pygame.sprite.Sprite):
             screen.blit(self.user_image[0][int(FRAME)%7],self.user_position)
             self.rect=self.user_image[0][int(FRAME)%7].get_rect()
             self.mask=pygame.mask.from_surface(self.user_image[0][int(FRAME)%7])
+            self.rect.x=self.user_position[0]
+            self.rect.y=self.user_position[1]
 
         else:
             screen.blit(self.user_image[1][int(FRAME)%7],self.user_position)
             self.rect=self.user_image[1][int(FRAME)%7].get_rect()
             self.mask=pygame.mask.from_surface(self.user_image[1][int(FRAME)%7])
+            self.rect.x=self.user_position[0]
+            self.rect.y=self.user_position[1]

@@ -48,10 +48,9 @@ class shot(pygame.sprite.Sprite):
                 self.rect.x+=self.speed
         
     def shoot_dino(self,game):
-        hits=pygame.sprite.spritecollide(self,self.game.dino_group,False,pygame.sprite.collide_mask)
+        hit_dino=pygame.sprite.spritecollide(self,self.game.dino_group,False,pygame.sprite.collide_mask)
 
-        if hits:
-            print(1)
+        if hit_dino:
             self.bullet_state="ready"
             game.DINO_alive=False
             
