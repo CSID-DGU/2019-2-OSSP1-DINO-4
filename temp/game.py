@@ -98,7 +98,7 @@ class Game:
         #sprite 그룹에 추가할 sprite 선언
         self.player1=Player((self.width/2,self.height/2),self)
         self.button_=button_image(self)
-        self.dino_1=Dino(self,400,350) #100,125
+        self.dino_1=Dino(self,100,125)
 
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
