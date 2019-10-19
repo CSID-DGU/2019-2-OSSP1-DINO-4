@@ -26,7 +26,13 @@ class trap(pygame.sprite.Sprite):
         self.saw_tooth=pygame.transform.scale(self.saw_tooth,(40,40))
 
 
-    def trap_draw(self,screen,fire):
+
+#    def trap_draw(self,screen,fire):
+
+
+    #위에서 떨어지는 폭탄
+    def bomb_draw(self,screen,fire):
+
         #좌표 = (fire[0],fire[1])
         self.rect.x=fire[0]
         self.rect.y=fire[1]
@@ -56,6 +62,7 @@ class trap(pygame.sprite.Sprite):
 
             else:
                 screen.blit(self.image,(fire[0],fire[1]))
+
 
 
         #screen.blit(self.saw_tooth,(700,260))

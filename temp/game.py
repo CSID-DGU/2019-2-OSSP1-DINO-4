@@ -6,15 +6,7 @@ from const import *
 from item import *
 from trap import *
 from shot import *
-import sys
-import os
-import dlib
-import glob
-from skimage import io
-import numpy as np
-import cv2
-
-
+from button_detect import *
 
 FRAME=0
 
@@ -48,6 +40,16 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class platform_remove(pygame.sprite.Sprite):
+    def __init__(self,x,y,w,h):
+        super().__init__()
+        self.image=pygame.image.load("tile/platform_tile_016.png").convert_alpha()
+        self.image=pygame.transform.scale(self.image,(60,30))
+
+        self.rect=self.image.get_rect()
+        self.rect.x=x
+        self.rect.y=y
+
 class Game:
     def __init__(self):
         self.width=900
@@ -55,6 +57,7 @@ class Game:
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
         self.fire_rect=[530,40]
+        self.BUTTON_ON=False
 
     #key 입력에 따른 이벤트처리
     def event(self):
@@ -68,7 +71,6 @@ class Game:
                     self.shot_.shooting_setting(self.player1.rect.x+30,self.player1.rect.y+10)
                 if event.key==pygame.K_UP:
                     self.player1.jump()
-                    print(2)
                 if event.key==pygame.K_LEFT:
                     self.player1.go_left()
                 if event.key==pygame.K_RIGHT:
@@ -85,15 +87,20 @@ class Game:
         #sprite 그룹 생성
         self.all_sprites=pygame.sprite.Group()
         self.platforms=pygame.sprite.Group()
+        self.remove_platform_=pygame.sprite.Group()
         self.player_group=pygame.sprite.Group()
+        self.button=pygame.sprite.Group()
 
         pygame.init()
 
-        #sprite 그룹에 sprite 추가
+        #sprite 그룹에 추가할 sprite 선언
         self.player1=Player((self.width/2,self.height/2),self)
+        self.button_=button_image(self)
+
+        #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
-
+        self.platforms.add(self.button_)
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -101,8 +108,18 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
+
         #초기화
         trap1=trap(self)
+
+        for plat in remove_platform:
+            p=platform_remove(*plat)
+            self.remove_platform_.add(p)
+
+        #선언 및 초기화
+        fire_trap=trap(self)
+        detect_button=button_detect()
+
         background_=background(self.width,self.height)
         item_=item(self)
         self.shot_=shot(self.screen,self)
@@ -117,9 +134,17 @@ class Game:
                 FRAME+=1
                 self.screen.fill((255,193,158))
 
-                #배경 그림
-                background_.background(self.screen)
-                trap1.trap_draw(self.screen,self.fire_rect)
+                #배경 blit
+                background_.background(self.screen)#배경
+            #    trap1.trap_draw(self.screen,self.fire_rect)
+                self.shot_.shooting()
+
+                fire_trap.bomb_draw(self.screen,self.fire_rect) #위에서 떨어지는 폭탄
+                self.button_.button_draw(self.screen)   #버튼
+
+                #버튼 눌렸는지 확인
+                detect_button.detect(self.screen,self)
+
                 self.shot_.shooting()
 
                 self.event()
@@ -141,3 +166,23 @@ class Game:
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         exit(0)
+
+
+            #플레이어가 창 밖으로 나가지 못하게
+            if self.player1.rect.right>WIDTH:
+                self.player1.rect.right=WIDTH
+            if self.player1.rect.left<0:
+                self.player1.rect.left=0
+
+            self.all_sprites.draw(self.screen)
+
+            if self.BUTTON_ON==False:
+                self.remove_platform_.draw(self.screen)
+
+
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit(0)
