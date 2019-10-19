@@ -1,4 +1,5 @@
 import pygame
+import face_recog
 from background import *
 from player import *
 from const import *
@@ -35,7 +36,7 @@ class Platform(pygame.sprite.Sprite):
         elif case==7:
             self.image=pygame.image.load("tile/platform_tile_038.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(30,30))
-    
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -112,31 +113,39 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
+
+        #초기화
+        trap1=trap(self)
+
         for plat in remove_platform:
             p=platform_remove(*plat)
             self.remove_platform_.add(p)
-        
+
         #선언 및 초기화
         fire_trap=trap(self)
         detect_button=button_detect()
+
         background_=background(self.width,self.height)
-        item_=item()
+        item_=item(self)
         self.shot_=shot(self.screen,self)
+        item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
+        face=face_recog.face(self)
+
+
 
         while True:
-            #settings
-            time=self.clock.tick(60)
-            FRAME+=1
-            self.screen.fill((255,193,158))
+            while (face.cap.isOpened()):
+                time=self.clock.tick(60)
+                FRAME+=1
+                self.screen.fill((255,193,158))
 
-            #이미지 blit
-            background_.background(self.screen) #배경
-            item_.item_display(self.screen) #아이템
-            fire_trap.bomb_draw(self.screen,self.fire_rect) #위에서 떨어지는 폭탄
-            self.button_.button_draw(self.screen)   #버튼
+                #배경 blit
+                background_.background(self.screen)#배경
+            #    trap1.trap_draw(self.screen,self.fire_rect)
+                self.shot_.shooting()
 
-            #버튼 눌렸는지 확인
-            detect_button.detect(self.screen,self)
+                fire_trap.bomb_draw(self.screen,self.fire_rect) #위에서 떨어지는 폭탄
+                self.button_.button_draw(self.screen)   #버튼
 
             if self.DINO_alive==True:
                 self.dino_1.update(self.screen)
@@ -144,22 +153,28 @@ class Game:
             self.shot_.shoot_dino(self)
             self.event()
             self.all_sprites.update()
+                #버튼 눌렸는지 확인
+                detect_button.detect(self.screen,self)
 
-            #플레이어가 창 밖으로 나가지 못하게
-            if self.player1.rect.right>WIDTH:
-                self.player1.rect.right=WIDTH
-            if self.player1.rect.left<0:
-                self.player1.rect.left=0
+                self.shot_.shooting()
 
-            self.all_sprites.draw(self.screen)
+                self.event()
+                self.all_sprites.update()
 
-            if self.BUTTON_ON==False:
-                self.remove_platform_.draw(self.screen)
-            
 
-            pygame.display.flip()
+                #플레이어가 창 밖으로 나가지 못하게
+                if self.player1.rect.right>WIDTH:
+                    self.player1.rect.right=WIDTH
+                if self.player1.rect.left<0:
+                    self.player1.rect.left=0
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit(0)
+                self.all_sprites.draw(self.screen)
+                mouthOpen=face.face_recognition(self.screen)
+                item_.item_eat(self.screen,mouthOpen)
+                pygame.display.flip()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit(0)
+
