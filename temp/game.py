@@ -99,7 +99,7 @@ class Game:
         #sprite 그룹에 추가할 sprite 선언
         self.player1=Player((self.width/2,self.height/2),self)
         self.button_=button_image(self)
-        self.dino_1=Dino(self,100,125)
+        self.dino_1=Dino(self,100,125) #100,125
 
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
@@ -113,9 +113,8 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
-
         #초기화
-        trap1=trap(self)
+        #trap1=trap(self)
 
         for plat in remove_platform:
             p=platform_remove(*plat)
@@ -147,17 +146,13 @@ class Game:
                 fire_trap.bomb_draw(self.screen,self.fire_rect) #위에서 떨어지는 폭탄
                 self.button_.button_draw(self.screen)   #버튼
 
-            if self.DINO_alive==True:
-                self.dino_1.update(self.screen)
-            self.shot_.shooting()
-            self.shot_.shoot_dino(self)
-            self.event()
-            self.all_sprites.update()
                 #버튼 눌렸는지 확인
                 detect_button.detect(self.screen,self)
 
+                if self.DINO_alive==True:
+                    self.dino_1.update(self.screen)
                 self.shot_.shooting()
-
+                self.shot_.shoot_dino(self)
                 self.event()
                 self.all_sprites.update()
 
@@ -169,6 +164,8 @@ class Game:
                     self.player1.rect.left=0
 
                 self.all_sprites.draw(self.screen)
+                if self.BUTTON_ON==False:
+                    self.remove_platform_.draw(self.screen)
                 mouthOpen=face.face_recognition(self.screen)
                 item_.item_eat(self.screen,mouthOpen)
                 pygame.display.flip()
