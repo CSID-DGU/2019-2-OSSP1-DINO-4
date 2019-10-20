@@ -134,7 +134,10 @@ class Game:
 
                 self.all_sprites.draw(self.screen)
                 mouthOpen=face.face_recognition(self.screen)
-                item_.item_eat(self.screen,mouthOpen)
+                item_.item_eat_red2(self.screen,mouthOpen)
+                item_.item_eat_red3(self.screen,mouthOpen)
+                item_.item_eat_red4(self.screen,mouthOpen)
+                item_.item_eat_red1(self.screen,mouthOpen)
                 pygame.display.flip()
 
                 for event in pygame.event.get():
