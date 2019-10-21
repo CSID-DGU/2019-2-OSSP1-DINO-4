@@ -8,6 +8,16 @@ from trap import *
 from shot import *
 from button_detect import *
 from dino import *
+<<<<<<< HEAD
+=======
+import sys
+import os
+import dlib
+import glob
+from skimage import io
+import numpy as np
+import cv2
+>>>>>>> character
 
 FRAME=0
 
@@ -87,12 +97,17 @@ class Game:
     def main(self):
         global FRAME
         #sprite 그룹 생성
+        #충돌 검사를 위해
         self.all_sprites=pygame.sprite.Group()
         self.platforms=pygame.sprite.Group()
         self.remove_platform_=pygame.sprite.Group()
         self.player_group=pygame.sprite.Group()
         self.button=pygame.sprite.Group()
         self.dino_group=pygame.sprite.Group()
+<<<<<<< HEAD
+=======
+        self.arrow_sprites=pygame.sprite.Group()
+>>>>>>> character
 
         pygame.init()
 
@@ -100,12 +115,25 @@ class Game:
         self.player1=Player((self.width/2,self.height/2),self)
         self.button_=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
+<<<<<<< HEAD
+=======
+        self.arrow_trap1=arrow(self,700,80)
+        self.arrow_trap2=arrow(self,100,470)
+        self.arrow_trap3=arrow(self,500,550)
+        self.arrow_trap4=arrow(self,150,330)
+        self.arrow_trap5=arrow(self,300,450)
+
+>>>>>>> character
 
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
+<<<<<<< HEAD
+=======
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
+>>>>>>> character
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -113,15 +141,18 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
+<<<<<<< HEAD
         #초기화
         #trap1=trap(self)
 
+=======
+>>>>>>> character
         for plat in remove_platform:
             p=platform_remove(*plat)
             self.remove_platform_.add(p)
 
         #선언 및 초기화
-        fire_trap=trap(self)
+        fire_trap=bomb(self)
         detect_button=button_detect()
 
         background_=background(self.width,self.height)
@@ -138,21 +169,35 @@ class Game:
                 FRAME+=1
                 self.screen.fill((255,193,158))
 
-                #배경 blit
-                background_.background(self.screen)#배경
-            #    trap1.trap_draw(self.screen,self.fire_rect)
-                self.shot_.shooting()
+                #배경
+                background_.background(self.screen)
+                # trap1.trap_draw(self.screen,self.fire_rect)
 
-                fire_trap.bomb_draw(self.screen,self.fire_rect) #위에서 떨어지는 폭탄
-                self.button_.button_draw(self.screen)   #버튼
+                #폭탄제어
+                fire_trap.bomb_draw(self.screen,self.fire_rect)
 
-                #버튼 눌렸는지 확인
+                #버튼제어
+                self.button_.button_draw(self.screen)
                 detect_button.detect(self.screen,self)
 
+<<<<<<< HEAD
                 if self.DINO_alive==True:
                     self.dino_1.update(self.screen)
                 self.shot_.shooting()
                 self.shot_.shoot_dino(self)
+=======
+                #창살제어
+                self.arrow_trap1.arrow_player_detect()
+
+                #공룡제어
+                if self.DINO_alive==True:
+                    self.dino_1.update(self.screen)
+
+                #공격제어
+                self.shot_.shooting()
+                self.shot_.shoot_dino(self)
+                
+>>>>>>> character
                 self.event()
                 self.all_sprites.update()
 
@@ -167,7 +212,10 @@ class Game:
                 if self.BUTTON_ON==False:
                     self.remove_platform_.draw(self.screen)
                 mouthOpen=face.face_recognition(self.screen)
-                item_.item_eat(self.screen,mouthOpen)
+                item_.item_eat_red2(self.screen,mouthOpen)
+                item_.item_eat_red3(self.screen,mouthOpen)
+                item_.item_eat_red4(self.screen,mouthOpen)
+                item_.item_eat_red1(self.screen,mouthOpen)
                 pygame.display.flip()
 
                 for event in pygame.event.get():
