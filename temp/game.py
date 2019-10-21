@@ -8,8 +8,6 @@ from trap import *
 from shot import *
 from button_detect import *
 from dino import *
-<<<<<<< HEAD
-=======
 import sys
 import os
 import dlib
@@ -17,7 +15,6 @@ import glob
 from skimage import io
 import numpy as np
 import cv2
->>>>>>> character
 
 FRAME=0
 
@@ -104,10 +101,7 @@ class Game:
         self.player_group=pygame.sprite.Group()
         self.button=pygame.sprite.Group()
         self.dino_group=pygame.sprite.Group()
-<<<<<<< HEAD
-=======
         self.arrow_sprites=pygame.sprite.Group()
->>>>>>> character
 
         pygame.init()
 
@@ -115,25 +109,19 @@ class Game:
         self.player1=Player((self.width/2,self.height/2),self)
         self.button_=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
-<<<<<<< HEAD
-=======
         self.arrow_trap1=arrow(self,700,80)
         self.arrow_trap2=arrow(self,100,470)
         self.arrow_trap3=arrow(self,500,550)
         self.arrow_trap4=arrow(self,150,330)
         self.arrow_trap5=arrow(self,300,450)
 
->>>>>>> character
 
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
-<<<<<<< HEAD
-=======
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
->>>>>>> character
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -141,12 +129,6 @@ class Game:
             self.all_sprites.add(p)
             self.platforms.add(p)
 
-<<<<<<< HEAD
-        #초기화
-        #trap1=trap(self)
-
-=======
->>>>>>> character
         for plat in remove_platform:
             p=platform_remove(*plat)
             self.remove_platform_.add(p)
@@ -180,12 +162,6 @@ class Game:
                 self.button_.button_draw(self.screen)
                 detect_button.detect(self.screen,self)
 
-<<<<<<< HEAD
-                if self.DINO_alive==True:
-                    self.dino_1.update(self.screen)
-                self.shot_.shooting()
-                self.shot_.shoot_dino(self)
-=======
                 #창살제어
                 self.arrow_trap1.arrow_player_detect()
 
@@ -197,7 +173,6 @@ class Game:
                 self.shot_.shooting()
                 self.shot_.shoot_dino(self)
                 
->>>>>>> character
                 self.event()
                 self.all_sprites.update()
 
