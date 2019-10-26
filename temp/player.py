@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         #self.rect
         self.rect=self.image.get_rect()
         self.rect.x=100
-        self.rect.y=50
+        self.rect.y=350
 
         #가속도[x의 가속도,y의 가속도]
         self.vel=[0,0]
@@ -59,6 +59,7 @@ class Player(pygame.sprite.Sprite):
         if len(hit_list)>0 or self.rect.bottom>=HEIGHT:
             self.vel[1]-=10
 
+
     #왼쪽으로 움직인다(x의 가속도 -6)
     def go_left(self):
         #FRAME+=1
@@ -94,3 +95,14 @@ class Player(pygame.sprite.Sprite):
                 self.rect.top=block.rect.bottom
 
             self.vel[1]=0
+
+        if self.game.BUTTON_ON==False:
+            hit_list=pygame.sprite.spritecollide(self,self.game.remove_platform_,False)
+            for block in hit_list:
+                if self.vel[1]>0:
+                    self.rect.bottom=block.rect.top
+                elif self.vel[1]<0:
+                    self.rect.top=block.rect.bottom
+
+
+

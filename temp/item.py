@@ -141,22 +141,3 @@ class item(pygame.sprite.Sprite):
             screen.blit(self.blue_potion,(400,150))
             screen.blit(self.blue_potion,(600,370))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
