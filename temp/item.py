@@ -41,6 +41,7 @@ class item(pygame.sprite.Sprite):
         screen.blit(self.blue_potion,(600,370))
 
     def item_eat_red2(self,screen,mouthOpen):
+<<<<<<< HEAD
         item__=item(self)
         #red2 item
         self.rect.x=300
@@ -69,8 +70,9 @@ class item(pygame.sprite.Sprite):
 
 
     def item_eat_red3(self,screen,mouthOpen):
+=======
+>>>>>>> 6dc52df9cfc2d36b9ec4925f5f46d0ba4c7e010c
         item__=item(self)
-        isEaten=0
         #red2 item
         self.rect.x=300
         self.rect.y=50
@@ -101,10 +103,74 @@ class item(pygame.sprite.Sprite):
         #item과 player 충돌 검사
         hits_item=pygame.sprite.spritecollide(self,self.game.player_group,False,pygame.sprite.collide_mask)
 
+
         listLength=range(int(len(self.redItem)/2))
 
         if hits_item and mouthOpen:
             self.redItem=[50,530,600,280,800,400]#4
+            for v in listLength:
+                screen.blit(self.red_potion,(self.redItem[v],self.redItem[v+1]))
+                v+=1
+            screen.blit(self.blue_potion,(30,460))
+            screen.blit(self.blue_potion,(400,150))
+            screen.blit(self.blue_potion,(600,370))
+        else:
+            for v in listLength:
+                screen.blit(self.red_potion,(self.redItem[v],self.redItem[v+1]))
+                v+=1
+            screen.blit(self.blue_potion,(30,460))
+            screen.blit(self.blue_potion,(400,150))
+            screen.blit(self.blue_potion,(600,370))
+
+    def item_eat_red4(self,screen,mouthOpen):
+        item__=item(self)
+        self.rect.x=600
+        self.rect.y=280
+        #item과 player 충돌 검사
+        hits_item=pygame.sprite.spritecollide(self,self.game.player_group,False,pygame.sprite.collide_mask)
+
+        listLength=range(int(len(self.redItem)/2))
+
+        if hits_item and mouthOpen:
+            self.redItem=[850,100,800,400]#4
+            for v in listLength:
+                screen.blit(self.red_potion,(self.redItem[v],self.redItem[v+1]))
+                v+=1
+            screen.blit(self.blue_potion,(30,460))
+            screen.blit(self.blue_potion,(400,150))
+            screen.blit(self.blue_potion,(600,370))
+        else:
+            for v in listLength:
+                screen.blit(self.red_potion,(self.redItem[v],self.redItem[v+1]))
+                v+=1
+            screen.blit(self.blue_potion,(30,460))
+            screen.blit(self.blue_potion,(400,150))
+            screen.blit(self.blue_potion,(600,370))
+
+    def item_eat_red1(self,screen,mouthOpen):
+        item__=item(self)
+        self.rect.x=50
+        self.rect.y=500
+        #item과 player 충돌 검사
+        hits_item=pygame.sprite.spritecollide(self,self.game.player_group,False,pygame.sprite.collide_mask)
+
+        listLength=range(int(len(self.redItem)/2))
+
+        if hits_item and mouthOpen:
+            self.redItem=[]#4
+
+    def item_eat_red3(self,screen,mouthOpen):
+        item__=item(self)
+        self.rect.x=850
+        self.rect.y=100
+        #item과 player 충돌 검사
+        hits_item=pygame.sprite.spritecollide(self,self.game.player_group,False,pygame.sprite.collide_mask)
+
+        listLength=range(int(len(self.redItem)/2))
+
+        if hits_item and mouthOpen:
+            self.redItem=[50,530,600,280,800,400]#4
+
             for v in listLength:
                 screen.blit(self.red_potion,(self.redItem[v],self.redItem[v+1]))
                 v+=1
@@ -168,20 +234,3 @@ class item(pygame.sprite.Sprite):
             screen.blit(self.blue_potion,(30,460))
             screen.blit(self.blue_potion,(400,150))
             screen.blit(self.blue_potion,(600,370))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
