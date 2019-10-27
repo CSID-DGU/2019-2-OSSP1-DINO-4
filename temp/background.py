@@ -50,7 +50,7 @@ class background:
             screen.blit(tile1,(x*100,0))
         for x in range(self.width//tile1.get_width()+1):
             screen.blit(tile1,(x*100,570))
-            
+
         #screen.blit(tile1,(0,490))
         #screen.blit(tile1,(100,490))
         #screen.blit(tile1,(200,490))
@@ -76,12 +76,12 @@ class background:
         #screen.blit(tile1,(370,250))
 
         #screen.blit(tile1,(600,420))
-        #screen.blit(water,(600,400))
+        screen.blit(water,(600,400))
 
         #screen.blit(tile1,(800,320))
-        #screen.blit(water,(800,300))
+        screen.blit(water,(800,300))
         #screen.blit(tile1,(700,320))
-        #screen.blit(water,(700,300))
+        screen.blit(water,(700,300))
         #screen.blit(tileup,(670,250))
 
         #screen.blit(tile1,(350,110))

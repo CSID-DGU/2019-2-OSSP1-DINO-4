@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
         #self.mask
         self.mask=pygame.mask.from_surface(self.image)
-        
+
         #self.rect
         self.rect=self.image.get_rect()
         self.rect.x=100
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         #가속도[x의 가속도,y의 가속도]
         self.vel=[0,0]
 
-    
+
     def load_image(self):
         idle_walk_sprite=['girl-0'+str(i)+'.png' for i in range(10)]
         idle_walk_right=[pygame.image.load('girl/'+i).convert_alpha()
@@ -70,7 +70,7 @@ class Player(pygame.sprite.Sprite):
     def go_right(self):
         #self.image=user_image_right[FRAME%10]
         self.vel[0]+=6
-    
+
     #멈춘다(x의 가속도 0)
     def stop(self):
         self.vel[0]=0
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.right=block.rect.left
             elif self.vel[0]<0:
                 self.rect.left=block.rect.right
-        
+
         self.rect.y+=self.vel[1]
         hit_list=pygame.sprite.spritecollide(self,self.game.platforms,False)
         for block in hit_list:
@@ -104,5 +104,4 @@ class Player(pygame.sprite.Sprite):
                 elif self.vel[1]<0:
                     self.rect.top=block.rect.bottom
 
-
-
+    #def teleport(self):

@@ -26,9 +26,7 @@ class face():
         self.frame = cv2.flip(self.frame, 1)
         self.dets = self.detector(self.frame, 0) #rects
         (self.mStart,self.mEnd)=(48,54) #mouth의 시작점, 끝점 번호
-
-        self.MOUTH_AR_THRESH = 0.05
-
+        self.MOUTH_AR_THRESH = 0.09
 
     def __call__(self):
         print (" ")
