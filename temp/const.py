@@ -42,8 +42,10 @@ PlatformList=[(0,0,100,30,1),(100,0,100,30,1),(200,0,100,30,1),(300,0,100,30,1),
 remove_platform=[(480,250,60,30)]
 
 #for sprite animation-walk
-EVENT=4
+EVENT=6
 RIGHT=0
 LEFT=1
 WALKRIGHT=2
 WALKLEFT=3
+JUMPRIGHT=4
+JUMPLEFT=5
