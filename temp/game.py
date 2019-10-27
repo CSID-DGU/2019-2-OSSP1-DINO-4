@@ -67,9 +67,11 @@ class Game:
         self.fire_rect=[530,40]
         self.BUTTON_ON=False
         self.DINO_alive=True
+        self.left=False
 
     #key 입력에 따른 이벤트처리
     def event(self):
+        self.player1.event_list = [False for i in range(EVENT)]
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 if self.playing:
@@ -77,7 +79,9 @@ class Game:
                 self.running=False
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
-                    self.shot_.shooting_setting(self.player1.rect.x+30,self.player1.rect.y+10)
+                    bulletX=self.player1.rect.x
+                    bulletY=self.player1.rect.y
+                    self.shot_.shooting_setting(bulletX+30,bulletY+10)
                 if event.key==pygame.K_UP:
                     self.player1.jump()
                 if event.key==pygame.K_LEFT:
@@ -89,10 +93,11 @@ class Game:
                     self.player1.stop()
                 if event.key==pygame.K_RIGHT and self.player1.vel[0]>0:
                     self.player1.stop()
+        self.player1.user_position[0]=self.player1.rect.x
+        self.player1.user_position[1]=self.player1.rect.y
 
 
     def main(self):
-        global FRAME
         #sprite 그룹 생성
         #충돌 검사를 위해
         self.all_sprites=pygame.sprite.Group()
@@ -106,7 +111,7 @@ class Game:
         pygame.init()
 
         #sprite 그룹에 추가할 sprite 선언
-        self.player1=Player((self.width/2,self.height/2),self)
+        self.player1=Player(self)
         self.button_=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
         self.arrow_trap1=arrow(self,700,80)
@@ -141,14 +146,11 @@ class Game:
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        face=face_recog.face(self)
-
-
+        #face=face_recog.face(self)
 
         while True:
-            while (face.cap.isOpened()):
-                time=self.clock.tick(60)
-                FRAME+=1
+            #while (face.cap.isOpened()):
+                self.time=self.clock.tick(60)
                 self.screen.fill((255,193,158))
 
                 #배경
@@ -173,7 +175,7 @@ class Game:
                 self.shot_.shooting()
                 self.shot_.shoot_dino(self)
                 
-                self.event()
+                self.player1.update_sprite(self.screen,self)
                 self.all_sprites.update()
 
 
@@ -186,11 +188,11 @@ class Game:
                 self.all_sprites.draw(self.screen)
                 if self.BUTTON_ON==False:
                     self.remove_platform_.draw(self.screen)
-                mouthOpen=face.face_recognition(self.screen)
-                item_.item_eat_red2(self.screen,mouthOpen)
-                item_.item_eat_red3(self.screen,mouthOpen)
-                item_.item_eat_red4(self.screen,mouthOpen)
-                item_.item_eat_red1(self.screen,mouthOpen)
+                #mouthOpen=face.face_recognition(self.screen)
+                #item_.item_eat_red2(self.screen,mouthOpen)
+                #item_.item_eat_red3(self.screen,mouthOpen)
+                #item_.item_eat_red4(self.screen,mouthOpen)
+                #item_.item_eat_red1(self.screen,mouthOpen)
                 pygame.display.flip()
 
                 for event in pygame.event.get():
