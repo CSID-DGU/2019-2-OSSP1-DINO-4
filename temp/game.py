@@ -94,7 +94,8 @@ class Game:
 
     def main(self):
         global FRAME
-        global GAME_OVER
+        global GAME_OVER,GAME_OVER_FIRE,GAME_OVER_ARROW
+        global GAME_START
         #sprite 그룹 생성
         #충돌 검사를 위해
         self.all_sprites=pygame.sprite.Group()
@@ -150,11 +151,10 @@ class Game:
         face=face_recog.face(self)
         gameover_=gameover(self.screen,self.clock)
 
-        #시작 페이지
-        gameover_.show_start_screen()
-        
+
         while True:
-            if GAME_OVER:
+
+            if GAME_OVER or GAME_OVER_FIRE or GAME_OVER_ARROW:
                 gameover_.show_gameover_screen()
 
                 #새로운 게임 시작 위해 다시 초기화
@@ -195,10 +195,10 @@ class Game:
                 for plat in remove_platform:
                     p=platform_remove(*plat)
                     self.remove_platform_.add(p)
-
-
                 GAME_OVER=False
-            #while (face.cap.isOpened()):
+                GAME_OVER_FIRE=False
+                GAME_OVER_ARROW=False
+
             time=self.clock.tick(60)
             FRAME+=1
             self.screen.fill((255,193,158))
@@ -208,14 +208,13 @@ class Game:
             # trap1.trap_draw(self.screen,self.fire_rect)
 
             #폭탄제어
-            GAME_OVER=fire_trap.bomb_draw(self.screen,self.fire_rect)
-
+            GAME_OVER_FIRE=fire_trap.bomb_draw(self.screen,self.fire_rect)
             #버튼제어
             self.button_.button_draw(self.screen)
             detect_button.detect(self.screen,self)
 
             #창살제어
-            GAME_OVER=self.arrow_trap1.arrow_player_detect()
+            GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
             #공룡제어
             if self.DINO_alive==True:

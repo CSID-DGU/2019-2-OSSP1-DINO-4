@@ -5,7 +5,10 @@ player_width=50
 player_height=50
 
 #게임 시작화면 게임 중인화면 종료 화면 구분 위한 변수
-GAME_OVER=False
+GAME_START=True
+GAME_OVER=True
+GAME_OVER_FIRE=False
+GAME_OVER_ARROW=False
 #for jump
 PLAYER_ACC=2
 PLAYER_FRICTION=-0.2
