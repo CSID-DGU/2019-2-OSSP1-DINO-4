@@ -8,6 +8,7 @@ from trap import *
 from shot import *
 from button_detect import *
 from dino import *
+from gameover import *
 import sys
 import os
 import dlib
@@ -98,6 +99,9 @@ class Game:
 
 
     def main(self):
+        global FRAME
+        global GAME_OVER,GAME_OVER_FIRE,GAME_OVER_ARROW
+        global GAME_START
         #sprite 그룹 생성
         #충돌 검사를 위해
         self.all_sprites=pygame.sprite.Group()
@@ -107,6 +111,7 @@ class Game:
         self.button=pygame.sprite.Group()
         self.dino_group=pygame.sprite.Group()
         self.arrow_sprites=pygame.sprite.Group()
+        self.water_sprites=pygame.sprite.Group()
 
         pygame.init()
 
@@ -119,6 +124,9 @@ class Game:
         self.arrow_trap3=arrow(self,500,550)
         self.arrow_trap4=arrow(self,150,330)
         self.arrow_trap5=arrow(self,300,450)
+        self.water1=water(self,600,400)
+        self.water2=water(self,800,300)
+        self.water3=water(self,700,300)
 
 
         #sprite 그룹에 sprite 추가
@@ -127,6 +135,7 @@ class Game:
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
+        self.water_sprites.add(self.water1,self.water2,self.water3)
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -141,62 +150,114 @@ class Game:
         #선언 및 초기화
         fire_trap=bomb(self)
         detect_button=button_detect()
-
         background_=background(self.width,self.height)
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
         face=face_recog.face(self)
+        gameover_=gameover(self.screen,self.clock)
+
 
         while True:
-            while (face.cap.isOpened()):
-                self.time=self.clock.tick(60)
-                self.screen.fill((255,193,158))
 
-                #배경
-                background_.background(self.screen)
-                # trap1.trap_draw(self.screen,self.fire_rect)
+            if GAME_OVER or GAME_OVER_FIRE or GAME_OVER_ARROW:
+                gameover_.show_gameover_screen()
 
-                #폭탄제어
-                fire_trap.bomb_draw(self.screen,self.fire_rect)
+                #새로운 게임 시작 위해 다시 초기화
+                self.all_sprites=pygame.sprite.Group()
+                self.platforms=pygame.sprite.Group()
+                self.remove_platform_=pygame.sprite.Group()
+                self.player_group=pygame.sprite.Group()
+                self.button=pygame.sprite.Group()
+                self.dino_group=pygame.sprite.Group()
+                self.arrow_sprites=pygame.sprite.Group()
+                self.water_sprites=pygame.sprite.Group()
 
-                #버튼제어
-                self.button_.button_draw(self.screen)
-                detect_button.detect(self.screen,self)
+                self.player1=Player((self.width/2,self.height/2),self)
+                self.button_=button_image(self)
+                self.dino_1=Dino(self,100,125) #100,125
+                self.arrow_trap1=arrow(self,700,80)
+                self.arrow_trap2=arrow(self,100,470)
+                self.arrow_trap3=arrow(self,500,550)
+                self.arrow_trap4=arrow(self,150,330)
+                self.arrow_trap5=arrow(self,300,450)
+                self.water1=water(self,600,400)
+                self.water2=water(self,800,300)
+                self.water3=water(self,700,300)
 
-                #창살제어
-                self.arrow_trap1.arrow_player_detect()
+                self.all_sprites.add(self.player1)
+                self.player_group.add(self.player1)
+                self.platforms.add(self.button_)
+                self.dino_group.add(self.dino_1)
+                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
+                self.water_sprites.add(self.water1,self.water2,self.water3)
 
-                #공룡제어
-                if self.DINO_alive==True:
-                    self.dino_1.update(self.screen)
+                #배경 벽 불러옴
+                for plat in PlatformList:
+                    p=Platform(*plat)
+                    self.all_sprites.add(p)
+                    self.platforms.add(p)
 
-                #공격제어
-                self.shot_.shooting()
-                self.shot_.shoot_dino(self)
-                
-                self.player1.update_sprite(self.screen,self)
-                self.all_sprites.update()
+                for plat in remove_platform:
+                    p=platform_remove(*plat)
+                    self.remove_platform_.add(p)
+                GAME_OVER=False
+                GAME_OVER_FIRE=False
+                GAME_OVER_ARROW=False
+
+            time=self.clock.tick(60)
+            FRAME+=1
+            self.screen.fill((255,193,158))
+
+            #배경
+            background_.background(self.screen)
+            # trap1.trap_draw(self.screen,self.fire_rect)
+
+            #폭탄제어
+            GAME_OVER_FIRE=fire_trap.bomb_draw(self.screen,self.fire_rect)
+            #버튼제어
+            self.button_.button_draw(self.screen)
+            detect_button.detect(self.screen,self)
+
+            #창살제어
+            GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
+
+            #공룡제어
+            if self.DINO_alive==True:
+                self.dino_1.update(self.screen)
+
+            #공격제어
+            self.shot_.shooting()
+            self.shot_.shoot_dino(self)
+
+            self.event()
+            self.all_sprites.update()
+
+            #물
+            self.water1.water_player_detect()
+            self.water2.water_player_detect()
+            self.water3.water_player_detect()
 
 
-                #플레이어가 창 밖으로 나가지 못하게
-                if self.player1.rect.right>WIDTH:
-                    self.player1.rect.right=WIDTH
-                if self.player1.rect.left<0:
-                    self.player1.rect.left=0
+            #플레이어가 창 밖으로 나가지 못하게
+            if self.player1.rect.right>WIDTH:
+                self.player1.rect.right=WIDTH
+            if self.player1.rect.left<0:
+                self.player1.rect.left=0
 
-                self.all_sprites.draw(self.screen)
-                if self.BUTTON_ON==False:
-                    self.remove_platform_.draw(self.screen)
-                mouthOpen=face.face_recognition(self.screen)
-                item_.item_eat_red2(self.screen,mouthOpen)
-                item_.item_eat_red3(self.screen,mouthOpen)
-                item_.item_eat_red4(self.screen,mouthOpen)
-                item_.item_eat_red1(self.screen,mouthOpen)
-                pygame.display.flip()
+            self.all_sprites.draw(self.screen)
+            if self.BUTTON_ON==False:
+                self.remove_platform_.draw(self.screen)
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        exit(0)
+            #얼굴 인식
+            mouthOpen=face.face_recognition(self.screen)
+            item_.item_eat_red2(self.screen,mouthOpen)
+            item_.item_eat_red3(self.screen,mouthOpen)
+            item_.item_eat_red4(self.screen,mouthOpen)
+            item_.item_eat_red1(self.screen,mouthOpen)
+            pygame.display.flip()
 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit(0)

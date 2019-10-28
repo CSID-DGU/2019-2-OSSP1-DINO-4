@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         #가속도[x의 가속도,y의 가속도]
         self.vel=[0,0]
 
-    
+
     def load_image(self):
         #stand
         idle_stand_right=[pygame.image.load("girl/stand.png")]
@@ -175,5 +175,4 @@ class Player(pygame.sprite.Sprite):
                 elif self.vel[1]<0:
                     self.rect.top=block.rect.bottom
 
-
-
+    #def teleport(self):

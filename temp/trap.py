@@ -1,5 +1,6 @@
 import pygame
 import random
+from const import *
 
 from const import *
 
@@ -36,7 +37,8 @@ class bomb(pygame.sprite.Sprite):
         hits_character=pygame.sprite.spritecollide(self,self.game.player_group,False,pygame.sprite.collide_mask)
 
         if hits_character:
-            pygame.quit()
+            GAME_OVER=True
+            return GAME_OVER
 
         #충돌했다면
         if hits:
@@ -62,7 +64,7 @@ class arrow(pygame.sprite.Sprite):
         super().__init__()
 
         self.game=game
-        
+
         #arrow image 불러옴
         self.arrow=pygame.image.load("tile/platform_tile_064.png").convert_alpha()
         self.arrow=pygame.transform.scale(self.arrow,(60,20))
@@ -75,7 +77,32 @@ class arrow(pygame.sprite.Sprite):
         self.rect.y=y
 
     def arrow_player_detect(self):
+        global GAME_OVER
         hits=pygame.sprite.spritecollide(self.game.player1,self.game.arrow_sprites,False,pygame.sprite.collide_mask)
+
+        if hits:
+            GAME_OVER=True
+            return GAME_OVER
+
+
+class water(pygame.sprite.Sprite):
+    def __init__(self,game,x,y):
+        super().__init__()
+
+        self.game=game
+        #water image 가져옴
+        self.water=pygame.image.load("tile/platform_tile_005.png").convert_alpha()
+        self.water=pygame.transform.scale(self.water,(100,20))
+
+        #충돌 검사 위해 초기화
+        self.rect = self.water.get_rect()
+        self.mask=pygame.mask.from_surface(self.water)
+
+        self.rect.x=x
+        self.rect.y=y
+
+    def water_player_detect(self):
+        hits=pygame.sprite.spritecollide(self.game.player1,self.game.water_sprites,False,pygame.sprite.collide_mask)
 
         if hits:
             pygame.quit()
