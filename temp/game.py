@@ -146,10 +146,10 @@ class Game:
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        #face=face_recog.face(self)
+        face=face_recog.face(self)
 
         while True:
-            #while (face.cap.isOpened()):
+            while (face.cap.isOpened()):
                 self.time=self.clock.tick(60)
                 self.screen.fill((255,193,158))
 
