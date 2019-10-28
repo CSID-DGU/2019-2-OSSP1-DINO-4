@@ -116,7 +116,6 @@ class Player(pygame.sprite.Sprite):
         game.event()
         FRAME+=1
         if self.event_list[RIGHT]:
-            print("1")
             self.image=self.user_image[RIGHT][0]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()

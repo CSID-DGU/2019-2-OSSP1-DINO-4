@@ -173,7 +173,7 @@ class Game:
                 self.arrow_sprites=pygame.sprite.Group()
                 self.water_sprites=pygame.sprite.Group()
 
-                self.player1=Player((self.width/2,self.height/2),self)
+                self.player1=Player(self)
                 self.button_=button_image(self)
                 self.dino_1=Dino(self,100,125) #100,125
                 self.arrow_trap1=arrow(self,700,80)
@@ -230,7 +230,7 @@ class Game:
             self.shot_.shooting()
             self.shot_.shoot_dino(self)
 
-            self.event()
+            self.player1.update_sprite(self.screen,self)
             self.all_sprites.update()
 
             #물
