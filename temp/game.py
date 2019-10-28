@@ -146,10 +146,10 @@ class Game:
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        #face=face_recog.face(self)
+        face=face_recog.face(self)
 
         while True:
-            #while (face.cap.isOpened()):
+            while (face.cap.isOpened()):
                 self.time=self.clock.tick(60)
                 self.screen.fill((255,193,158))
 
@@ -188,11 +188,11 @@ class Game:
                 self.all_sprites.draw(self.screen)
                 if self.BUTTON_ON==False:
                     self.remove_platform_.draw(self.screen)
-                #mouthOpen=face.face_recognition(self.screen)
-                #item_.item_eat_red2(self.screen,mouthOpen)
-                #item_.item_eat_red3(self.screen,mouthOpen)
-                #item_.item_eat_red4(self.screen,mouthOpen)
-                #item_.item_eat_red1(self.screen,mouthOpen)
+                mouthOpen=face.face_recognition(self.screen)
+                item_.item_eat_red2(self.screen,mouthOpen)
+                item_.item_eat_red3(self.screen,mouthOpen)
+                item_.item_eat_red4(self.screen,mouthOpen)
+                item_.item_eat_red1(self.screen,mouthOpen)
                 pygame.display.flip()
 
                 for event in pygame.event.get():
