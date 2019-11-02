@@ -66,7 +66,7 @@ class Game:
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
         self.fire_rect=[530,40]
-        self.BUTTON_ON=False
+        self.BUTTON_ON1=False
         self.DINO_alive=True
         self.left=False
 
@@ -108,7 +108,7 @@ class Game:
         self.platforms=pygame.sprite.Group()
         self.remove_platform_=pygame.sprite.Group()
         self.player_group=pygame.sprite.Group()
-        self.button=pygame.sprite.Group()
+        #self.button1=pygame.sprite.Group()
         self.dino_group=pygame.sprite.Group()
         self.arrow_sprites=pygame.sprite.Group()
         self.water_sprites=pygame.sprite.Group()
@@ -117,25 +117,25 @@ class Game:
 
         #sprite 그룹에 추가할 sprite 선언
         self.player1=Player(self)
-        self.button_=button_image(self)
+        self.button1=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
-        self.arrow_trap1=arrow(self,700,80)
-        self.arrow_trap2=arrow(self,100,470)
+
+        self.arrow_trap1=arrow(self,585,130)
+        self.arrow_trap2=arrow(self,170,470)
         self.arrow_trap3=arrow(self,500,550)
         self.arrow_trap4=arrow(self,150,330)
-        self.arrow_trap5=arrow(self,300,450)
-        self.water1=water(self,600,400)
-        self.water2=water(self,800,300)
-        self.water3=water(self,700,300)
+        #self.water1=water(self,600,400)
+        #self.water2=water(self,800,300)
+        #self.water3=water(self,700,300)
 
 
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
-        self.platforms.add(self.button_)
+        self.platforms.add(self.button1)
         self.dino_group.add(self.dino_1)
-        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
-        self.water_sprites.add(self.water1,self.water2,self.water3)
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4)
+        #self.water_sprites.add(self.water1,self.water2,self.water3)
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -150,7 +150,7 @@ class Game:
         #선언 및 초기화
         teleport_=teleport(self)
         fire_trap=bomb(self)
-        detect_button=button_detect()
+        detect_button1=button_detect()
         background_=background(self.width,self.height)
         item_=item(self)
         self.shot_=shot(self.screen,self)
@@ -169,29 +169,29 @@ class Game:
                 self.platforms=pygame.sprite.Group()
                 self.remove_platform_=pygame.sprite.Group()
                 self.player_group=pygame.sprite.Group()
-                self.button=pygame.sprite.Group()
+                self.button1=pygame.sprite.Group()
                 self.dino_group=pygame.sprite.Group()
                 self.arrow_sprites=pygame.sprite.Group()
                 self.water_sprites=pygame.sprite.Group()
+                self.BUTTON_ON1=False
 
                 self.player1=Player(self)
-                self.button_=button_image(self)
+                self.button1=button_image(self)
                 self.dino_1=Dino(self,100,125) #100,125
-                self.arrow_trap1=arrow(self,700,80)
-                self.arrow_trap2=arrow(self,100,470)
+                self.arrow_trap1=arrow(self,585,130)
+                self.arrow_trap2=arrow(self,170,470)
                 self.arrow_trap3=arrow(self,500,550)
                 self.arrow_trap4=arrow(self,150,330)
-                self.arrow_trap5=arrow(self,300,450)
-                self.water1=water(self,600,400)
-                self.water2=water(self,800,300)
-                self.water3=water(self,700,300)
+                #self.water1=water(self,600,400)
+                #self.water2=water(self,800,300)
+                #self.water3=water(self,700,300)
 
                 self.all_sprites.add(self.player1)
                 self.player_group.add(self.player1)
-                self.platforms.add(self.button_)
+                self.platforms.add(self.button1)
                 self.dino_group.add(self.dino_1)
-                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
-                self.water_sprites.add(self.water1,self.water2,self.water3)
+                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4)
+                #self.water_sprites.add(self.water1,self.water2,self.water3)
 
                 #배경 벽 불러옴
                 for plat in PlatformList:
@@ -216,9 +216,10 @@ class Game:
 
             #폭탄제어
             GAME_OVER_FIRE=fire_trap.bomb_draw(self.screen,self.fire_rect)
+
             #버튼제어
-            self.button_.button_draw(self.screen)
-            detect_button.detect(self.screen,self)
+            self.button1.button_draw(self.screen)
+            detect_button1.detect(self.screen,self)
 
             #창살제어
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
@@ -234,10 +235,6 @@ class Game:
             self.player1.update_sprite(self.screen,self)
             self.all_sprites.update()
 
-            #물
-            self.water1.water_player_detect()
-            self.water2.water_player_detect()
-            self.water3.water_player_detect()
 
             #순간이동
             teleport_.sprite_def(self,self.player1)
@@ -251,7 +248,7 @@ class Game:
                 self.player1.rect.left=0
 
             self.all_sprites.draw(self.screen)
-            if self.BUTTON_ON==False:
+            if self.BUTTON_ON1==False:
                 self.remove_platform_.draw(self.screen)
 
             #얼굴 인식

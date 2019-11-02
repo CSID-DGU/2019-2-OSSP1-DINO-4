@@ -100,6 +100,9 @@ class Player(pygame.sprite.Sprite):
         self.user_position[0]+=6
         self.vel[0]+=6
 
+    def go_up(self):
+        self.vel[1]-=25
+
     #멈춘다(x의 가속도 0)
     def stop(self):
         self.vel[0]=0
@@ -166,7 +169,7 @@ class Player(pygame.sprite.Sprite):
 
             self.vel[1]=0
 
-        if self.game.BUTTON_ON==False:
+        if self.game.BUTTON_ON1==False:
             hit_list=pygame.sprite.spritecollide(self,self.game.remove_platform_,False)
             for block in hit_list:
                 if self.vel[1]>0:
