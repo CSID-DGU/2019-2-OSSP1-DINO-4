@@ -4,6 +4,11 @@ HEIGHT=600
 player_width=50
 player_height=50
 
+#게임 시작화면 게임 중인화면 종료 화면 구분 위한 변수
+GAME_START=True
+GAME_OVER=True
+GAME_OVER_FIRE=False
+GAME_OVER_ARROW=False
 #for jump
 PLAYER_ACC=2
 PLAYER_FRICTION=-0.2
@@ -42,10 +47,8 @@ PlatformList=[(0,0,100,30,1),(100,0,100,30,1),(200,0,100,30,1),(300,0,100,30,1),
 remove_platform=[(480,250,60,30)]
 
 #for sprite animation-walk
-EVENT=6
+EVENT=4
 RIGHT=0
 LEFT=1
 WALKRIGHT=2
 WALKLEFT=3
-JUMPRIGHT=4
-JUMPLEFT=5

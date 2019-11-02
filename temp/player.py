@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         #가속도[x의 가속도,y의 가속도]
         self.vel=[0,0]
 
-    
+
     def load_image(self):
         #stand
         idle_stand_right=[pygame.image.load("girl/stand.png")]
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         idle_stand_left=[pygame.transform.flip(idle_stand_right[0],True,False)]
 
         #walk
-        idle_walk_sprite=['girl-0'+str(i)+'.png' for i in range(10)]
+        idle_walk_sprite=['girl-0'+str(i)+'.png' for i in range(7)]
         idle_walk_right=[pygame.image.load('girl/'+i).convert_alpha()
                          for i in idle_walk_sprite]
         idle_walk_right=[pygame.transform.scale(i,(50,50))
@@ -116,7 +116,6 @@ class Player(pygame.sprite.Sprite):
         game.event()
         FRAME+=1
         if self.event_list[RIGHT]:
-            print("1")
             self.image=self.user_image[RIGHT][0]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
@@ -131,7 +130,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y=self.user_position[1]
         
         elif self.event_list[WALKRIGHT]:
-            self.image=self.user_image[WALKRIGHT][(FRAME//4)%9]
+            self.image=self.user_image[WALKRIGHT][(FRAME//4)%7]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
@@ -139,7 +138,7 @@ class Player(pygame.sprite.Sprite):
  
         elif self.event_list[WALKLEFT]:
             FRAME+=1
-            self.image=self.user_image[WALKLEFT][(FRAME//4)%9]
+            self.image=self.user_image[WALKLEFT][(FRAME//4)%7]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
@@ -175,5 +174,4 @@ class Player(pygame.sprite.Sprite):
                 elif self.vel[1]<0:
                     self.rect.top=block.rect.bottom
 
-
-
+    #def teleport(self):
