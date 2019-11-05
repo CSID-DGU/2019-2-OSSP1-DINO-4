@@ -15,6 +15,7 @@ import dlib
 import glob
 from skimage import io
 import numpy as np
+from network import *
 import cv2
 
 FRAME=0
@@ -97,6 +98,23 @@ class Game:
         self.player1.user_position[0]=self.player1.rect.x
         self.player1.user_position[1]=self.player1.rect.y
 
+    #network로 data 전송
+    def send_data(self):
+        """
+        Send position to server
+        :return: None
+        """
+        data = str(self.net.id) + ":" + str(self.player1.rect.x) + "," + str(self.player1.rect.y)
+        reply = self.net.send(data)
+        return reply
+
+    #전송할 데이터를 parse하는 함수
+    def parse_data(self,data):
+        try:
+            d = data.split(":")[1].split(",")
+            return int(d[0]), int(d[1])
+        except:
+            return 0,0
 
     def main(self):
         global FRAME
@@ -117,6 +135,8 @@ class Game:
 
         #sprite 그룹에 추가할 sprite 선언
         self.player1=Player(self)
+        self.player2=Player(self)# 추가
+        self.net=Network()
         self.button1=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
 
@@ -132,6 +152,8 @@ class Game:
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
+        self.all_sprites.add(self.player2) #2추가
+        self.player_group.add(self.player2) #2추가
         self.platforms.add(self.button1)
         self.dino_group.add(self.dino_1)
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4)
@@ -155,9 +177,16 @@ class Game:
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        face=face_recog.face(self)
+        #face=face_recog.face(self)
         gameover_=gameover(self.screen,self.clock)
+        n=Network()
 
+        #2플레이어 게임 연결
+        try:
+            game = n.send("get")
+        except:
+            run = False
+            print("Couldn't get game")
 
         while True:
 
@@ -188,6 +217,8 @@ class Game:
 
                 self.all_sprites.add(self.player1)
                 self.player_group.add(self.player1)
+                self.all_sprites.add(self.player2)#p2
+                self.player_group.add(self.player2)#p2
                 self.platforms.add(self.button1)
                 self.dino_group.add(self.dino_1)
                 self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4)
@@ -232,20 +263,24 @@ class Game:
             self.shot_.shooting()
             self.shot_.shoot_dino(self)
 
-            self.player1.update_sprite(self.screen,self)
-            self.all_sprites.update()
-
 
             #순간이동
             teleport_.sprite_def(self,self.player1)
             if(teleport_.ready==True):
                 teleport_.collide_detect(self)
-    
+
             #플레이어가 창 밖으로 나가지 못하게
             if self.player1.rect.right>WIDTH:
                 self.player1.rect.right=WIDTH
             if self.player1.rect.left<0:
                 self.player1.rect.left=0
+
+            self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
+
+            self.player2.update_sprite(self.screen,self)#추가ㄹ
+            self.player2.update()
+            self.player1.update_sprite(self.screen,self)
+            self.all_sprites.update()
 
             self.all_sprites.draw(self.screen)
             if self.BUTTON_ON1==False:
