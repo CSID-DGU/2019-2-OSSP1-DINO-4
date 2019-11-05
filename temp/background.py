@@ -76,7 +76,7 @@ class background:
         #screen.blit(tile1,(370,250))
 
         #screen.blit(tile1,(600,420))
-        screen.blit(water,(600,400))
+        #screen.blit(water,(600,400))
 
         #screen.blit(tile1,(800,320))
         screen.blit(water,(800,300))
@@ -102,14 +102,13 @@ class background:
         #screen.blit(door,(765,490))
 
         #arrow
-        screen.blit(arrow,(700,80))
-        screen.blit(arrow,(100,470))
+        screen.blit(arrow,(585,130))
+        screen.blit(arrow,(170,470))
         screen.blit(arrow,(500,550))
         screen.blit(arrow,(150,330))
-        screen.blit(arrow,(300,450))
 
         #neon warp door
-        screen.blit(blue_up,(150,500))
+        screen.blit(blue_up,(50,500))
         screen.blit(blue_up,(700,495))
         screen.blit(red_up,(850,15))
         screen.blit(red_up,(850,390))
