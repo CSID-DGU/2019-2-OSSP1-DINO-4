@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
         self.game=game
         self.left=False
         self.user_position=[100,350]
-
         #load image
         self.user_image=[]
         self.load_image()
@@ -128,14 +127,14 @@ class Player(pygame.sprite.Sprite):
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
             self.rect.y=self.user_position[1]
-        
+
         elif self.event_list[WALKRIGHT]:
             self.image=self.user_image[WALKRIGHT][(FRAME//4)%9]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
             self.rect.y=self.user_position[1]
- 
+
         elif self.event_list[WALKLEFT]:
             FRAME+=1
             self.image=self.user_image[WALKLEFT][(FRAME//4)%9]
@@ -143,7 +142,7 @@ class Player(pygame.sprite.Sprite):
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
             self.rect.y=self.user_position[1]
-    
+
 
     def update(self):
         self.calc_gravity()
