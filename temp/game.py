@@ -162,7 +162,7 @@ class Game:
         self.player_group.add(self.player2) #2추가
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
-        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4)
         #self.water_sprites.add(self.water1,self.water2,self.water3)
 
         #배경 벽 불러옴
@@ -178,7 +178,7 @@ class Game:
         #선언 및 초기화
         teleport_=teleport(self)
         fire_trap=bomb(self)
-        detect_button=button_detect()
+        detect_button1=button_detect()
         background_=background(self.width,self.height)
         item_=item(self)
         self.shot_=shot(self.screen,self)
@@ -217,6 +217,7 @@ class Game:
                 self.arrow_trap3=arrow(self,500,550)
                 self.arrow_trap4=arrow(self,150,330)
                 self.arrow_trap5=arrow(self,300,450)
+                self.BUTTON_ON1=False
                 #self.water1=water(self,600,400)
                 #self.water2=water(self,800,300)
                 #self.water3=water(self,700,300)
@@ -228,7 +229,7 @@ class Game:
                 self.platforms.add(self.button_)
                 self.dino_group.add(self.dino_1)
                 self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
-                self.water_sprites.add(self.water1,self.water2,self.water3)
+                #self.water_sprites.add(self.water1,self.water2,self.water3)
 
                 #배경 벽 불러옴
                 for plat in PlatformList:
