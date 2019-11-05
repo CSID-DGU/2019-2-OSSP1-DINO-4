@@ -15,6 +15,8 @@ import dlib
 import glob
 from skimage import io
 import numpy as np
+import pickle
+from network import *
 import cv2
 
 FRAME=0
@@ -68,9 +70,15 @@ class Game:
         self.fire_rect=[530,40]
         self.BUTTON_ON=False
         self.DINO_alive=True
+        self.left=False
+        self.bg = pygame.image.load("tile/bg.png") #배경 그림 위치
+        pygame.display.set_caption("DINO")
+        pygame.font.init()
+
 
     #key 입력에 따른 이벤트처리
     def event(self):
+        self.player1.event_list = [False for i in range(EVENT)]
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 if self.playing:
@@ -78,7 +86,9 @@ class Game:
                 self.running=False
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
-                    self.shot_.shooting_setting(self.player1.rect.x+30,self.player1.rect.y+10)
+                    bulletX=self.player1.rect.x
+                    bulletY=self.player1.rect.y
+                    self.shot_.shooting_setting(bulletX+30,bulletY+10)
                 if event.key==pygame.K_UP:
                     self.player1.jump()
                 if event.key==pygame.K_LEFT:
@@ -90,7 +100,26 @@ class Game:
                     self.player1.stop()
                 if event.key==pygame.K_RIGHT and self.player1.vel[0]>0:
                     self.player1.stop()
+        self.player1.user_position[0]=self.player1.rect.x
+        self.player1.user_position[1]=self.player1.rect.y
 
+    #network로 data 전송
+    def send_data(self):
+        """
+        Send position to server
+        :return: None
+        """
+        data = str(self.net.id) + ":" + str(self.player1.rect.x) + "," + str(self.player1.rect.y)
+        reply = self.net.send(data)
+        return reply
+
+    #전송할 데이터를 parse하는 함수
+    def parse_data(self,data):
+        try:
+            d = data.split(":")[1].split(",")
+            return int(d[0]), int(d[1])
+        except:
+            return 0,0
 
     def main(self):
         global FRAME
@@ -110,7 +139,9 @@ class Game:
         pygame.init()
 
         #sprite 그룹에 추가할 sprite 선언
-        self.player1=Player((self.width/2,self.height/2),self)
+        self.player1=Player(self)
+        self.player2=Player(self)# 추가
+        self.net=Network()
         self.button_=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
         self.arrow_trap1=arrow(self,700,80)
@@ -126,6 +157,8 @@ class Game:
         #sprite 그룹에 sprite 추가
         self.all_sprites.add(self.player1)
         self.player_group.add(self.player1)
+        self.all_sprites.add(self.player2) #2추가
+        self.player_group.add(self.player2) #2추가
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
@@ -147,15 +180,21 @@ class Game:
         background_=background(self.width,self.height)
         item_=item(self)
         self.shot_=shot(self.screen,self)
-        item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        face=face_recog.face(self)
+        #item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
+        '''face=face_recog.face(self)'''
         gameover_=gameover(self.screen,self.clock)
+        n=Network()
 
+        #2플레이어 게임 연결
+        try:
+            game = n.send("get")
+        except:
+            run = False
+            print("Couldn't get game")
 
         while True:
-
             if GAME_OVER or GAME_OVER_FIRE or GAME_OVER_ARROW:
-                gameover_.show_gameover_screen()
+                gameover_.show_gameover_screen(n)
 
                 #새로운 게임 시작 위해 다시 초기화
                 self.all_sprites=pygame.sprite.Group()
@@ -167,7 +206,8 @@ class Game:
                 self.arrow_sprites=pygame.sprite.Group()
                 self.water_sprites=pygame.sprite.Group()
 
-                self.player1=Player((self.width/2,self.height/2),self)
+                self.player1=Player(self)
+                self.player2=Player(self) #p2추가
                 self.button_=button_image(self)
                 self.dino_1=Dino(self,100,125) #100,125
                 self.arrow_trap1=arrow(self,700,80)
@@ -181,6 +221,8 @@ class Game:
 
                 self.all_sprites.add(self.player1)
                 self.player_group.add(self.player1)
+                self.all_sprites.add(self.player2)#p2
+                self.player_group.add(self.player2)#p2
                 self.platforms.add(self.button_)
                 self.dino_group.add(self.dino_1)
                 self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
@@ -224,9 +266,6 @@ class Game:
             self.shot_.shooting()
             self.shot_.shoot_dino(self)
 
-            self.event()
-            self.all_sprites.update()
-
             #물
             self.water1.water_player_detect()
             self.water2.water_player_detect()
@@ -239,16 +278,28 @@ class Game:
             if self.player1.rect.left<0:
                 self.player1.rect.left=0
 
+            #player2 정보 보내기
+            self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
+
+            self.player2.update_sprite(self.screen,self)#추가ㄹ
+            self.player2.update()
+            self.player1.update_sprite(self.screen,self)
+            self.all_sprites.update()
+
+
             self.all_sprites.draw(self.screen)
             if self.BUTTON_ON==False:
                 self.remove_platform_.draw(self.screen)
 
             #얼굴 인식
+            '''
             mouthOpen=face.face_recognition(self.screen)
             item_.item_eat_red2(self.screen,mouthOpen)
             item_.item_eat_red3(self.screen,mouthOpen)
             item_.item_eat_red4(self.screen,mouthOpen)
             item_.item_eat_red1(self.screen,mouthOpen)
+            '''
+
             pygame.display.flip()
 
             for event in pygame.event.get():

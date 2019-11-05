@@ -18,6 +18,8 @@ class gameover:
         self.font_name=pygame.font.match_font('arial')
         self.WHITE=(255,255,255)
         self.ORANGE=(255,193,158)
+        self.width=900
+        self.height=600
 
     #화면에 글씨 쓰기
     def draw_text(self,surf,text,size,x,y):
@@ -27,7 +29,7 @@ class gameover:
         text_rect.midtop=(x,y)
         surf.blit(text_surface,text_rect)
 
-    def show_start_screen(self):
+    def show_start_screen(self,n):
         global GAME_START
 
         self.screen.fill(self.ORANGE)
@@ -48,7 +50,7 @@ class gameover:
                     GAME_START=False
 
 
-    def show_gameover_screen(self):
+    def show_gameover_screen(self,n):
         self.screen.fill(self.ORANGE)
         self.draw_text(self.screen,"DINO",64,SCREEN_WIDTH/2,SCREEN_HEIGHT/4)
         self.draw_text(self.screen,"Arrow keys move, Space to fire",22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
@@ -64,4 +66,18 @@ class gameover:
                     pygame.quit()
                 #아무키나 둘러도 가능하도록
                 if event.type==pygame.KEYUP:
+                    """
+                    while True:
+                        if not(n.connect()):
+                            print("연결 안댐")
+                            self.screen.fill(self.ORANGE)
+                            self.draw_text(self.screen,"Waiting for Player...",64,SCREEN_WIDTH/2,SCREEN_HEIGHT/4)
+                            pygame.display.flip()
+                            waiting=True
+                        else:
+                            print("연결 댐")
+                            waiting=False
+                            break
+                            """
                     waiting=False
+                    GAME_START=False
