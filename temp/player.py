@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
         idle_stand_left=[pygame.transform.flip(idle_stand_right[0],True,False)]
 
         #walk
-        idle_walk_sprite=['girl-0'+str(i)+'.png' for i in range(10)]
+        idle_walk_sprite=['girl-0'+str(i)+'.png' for i in range(7)]
         idle_walk_right=[pygame.image.load('girl/'+i).convert_alpha()
                          for i in idle_walk_sprite]
         idle_walk_right=[pygame.transform.scale(i,(50,50))
@@ -99,6 +99,9 @@ class Player(pygame.sprite.Sprite):
         self.user_position[0]+=6
         self.vel[0]+=6
 
+    def go_up(self):
+        self.vel[1]-=25
+
     #멈춘다(x의 가속도 0)
     def stop(self):
         self.vel[0]=0
@@ -129,7 +132,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y=self.user_position[1]
 
         elif self.event_list[WALKRIGHT]:
-            self.image=self.user_image[WALKRIGHT][(FRAME//4)%9]
+            self.image=self.user_image[WALKRIGHT][(FRAME//4)%7]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
@@ -137,7 +140,7 @@ class Player(pygame.sprite.Sprite):
 
         elif self.event_list[WALKLEFT]:
             FRAME+=1
-            self.image=self.user_image[WALKLEFT][(FRAME//4)%9]
+            self.image=self.user_image[WALKLEFT][(FRAME//4)%7]
             self.mask=pygame.mask.from_surface(self.image)
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
@@ -165,7 +168,7 @@ class Player(pygame.sprite.Sprite):
 
             self.vel[1]=0
 
-        if self.game.BUTTON_ON==False:
+        if self.game.BUTTON_ON1==False:
             hit_list=pygame.sprite.spritecollide(self,self.game.remove_platform_,False)
             for block in hit_list:
                 if self.vel[1]>0:

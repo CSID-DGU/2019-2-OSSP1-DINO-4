@@ -68,7 +68,7 @@ class Game:
         self.screen=pygame.display.set_mode((self.width,self.height))
         self.clock=pygame.time.Clock()
         self.fire_rect=[530,40]
-        self.BUTTON_ON=False
+        self.BUTTON_ON1=False
         self.DINO_alive=True
         self.left=False
         self.bg = pygame.image.load("tile/bg.png") #배경 그림 위치
@@ -131,7 +131,7 @@ class Game:
         self.platforms=pygame.sprite.Group()
         self.remove_platform_=pygame.sprite.Group()
         self.player_group=pygame.sprite.Group()
-        self.button=pygame.sprite.Group()
+        #self.button1=pygame.sprite.Group()
         self.dino_group=pygame.sprite.Group()
         self.arrow_sprites=pygame.sprite.Group()
         self.water_sprites=pygame.sprite.Group()
@@ -143,15 +143,16 @@ class Game:
         self.player2=Player(self)# 추가
         self.net=Network()
         self.button_=button_image(self)
+        self.button1=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
-        self.arrow_trap1=arrow(self,700,80)
-        self.arrow_trap2=arrow(self,100,470)
+
+        self.arrow_trap1=arrow(self,585,130)
+        self.arrow_trap2=arrow(self,170,470)
         self.arrow_trap3=arrow(self,500,550)
         self.arrow_trap4=arrow(self,150,330)
-        self.arrow_trap5=arrow(self,300,450)
-        self.water1=water(self,600,400)
-        self.water2=water(self,800,300)
-        self.water3=water(self,700,300)
+        #self.water1=water(self,600,400)
+        #self.water2=water(self,800,300)
+        #self.water3=water(self,700,300)
 
 
         #sprite 그룹에 sprite 추가
@@ -162,7 +163,7 @@ class Game:
         self.platforms.add(self.button_)
         self.dino_group.add(self.dino_1)
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5)
-        self.water_sprites.add(self.water1,self.water2,self.water3)
+        #self.water_sprites.add(self.water1,self.water2,self.water3)
 
         #배경 벽 불러옴
         for plat in PlatformList:
@@ -175,6 +176,7 @@ class Game:
             self.remove_platform_.add(p)
 
         #선언 및 초기화
+        teleport_=teleport(self)
         fire_trap=bomb(self)
         detect_button=button_detect()
         background_=background(self.width,self.height)
@@ -215,9 +217,9 @@ class Game:
                 self.arrow_trap3=arrow(self,500,550)
                 self.arrow_trap4=arrow(self,150,330)
                 self.arrow_trap5=arrow(self,300,450)
-                self.water1=water(self,600,400)
-                self.water2=water(self,800,300)
-                self.water3=water(self,700,300)
+                #self.water1=water(self,600,400)
+                #self.water2=water(self,800,300)
+                #self.water3=water(self,700,300)
 
                 self.all_sprites.add(self.player1)
                 self.player_group.add(self.player1)
@@ -251,9 +253,10 @@ class Game:
 
             #폭탄제어
             GAME_OVER_FIRE=fire_trap.bomb_draw(self.screen,self.fire_rect)
+
             #버튼제어
-            self.button_.button_draw(self.screen)
-            detect_button.detect(self.screen,self)
+            self.button1.button_draw(self.screen)
+            detect_button1.detect(self.screen,self)
 
             #창살제어
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
@@ -266,40 +269,31 @@ class Game:
             self.shot_.shooting()
             self.shot_.shoot_dino(self)
 
-            #물
-            self.water1.water_player_detect()
-            self.water2.water_player_detect()
-            self.water3.water_player_detect()
+            self.player1.update_sprite(self.screen,self)
+            self.all_sprites.update()
 
 
+            #순간이동
+            teleport_.sprite_def(self,self.player1)
+            if(teleport_.ready==True):
+                teleport_.collide_detect(self)
+    
             #플레이어가 창 밖으로 나가지 못하게
             if self.player1.rect.right>WIDTH:
                 self.player1.rect.right=WIDTH
             if self.player1.rect.left<0:
                 self.player1.rect.left=0
 
-            #player2 정보 보내기
-            self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
-
-            self.player2.update_sprite(self.screen,self)#추가ㄹ
-            self.player2.update()
-            self.player1.update_sprite(self.screen,self)
-            self.all_sprites.update()
-
-
             self.all_sprites.draw(self.screen)
-            if self.BUTTON_ON==False:
+            if self.BUTTON_ON1==False:
                 self.remove_platform_.draw(self.screen)
 
             #얼굴 인식
-            '''
-            mouthOpen=face.face_recognition(self.screen)
-            item_.item_eat_red2(self.screen,mouthOpen)
-            item_.item_eat_red3(self.screen,mouthOpen)
-            item_.item_eat_red4(self.screen,mouthOpen)
-            item_.item_eat_red1(self.screen,mouthOpen)
-            '''
-
+            #mouthOpen=face.face_recognition(self.screen)
+            #item_.item_eat_red2(self.screen,mouthOpen)
+            #item_.item_eat_red3(self.screen,mouthOpen)
+            #item_.item_eat_red4(self.screen,mouthOpen)
+            #item_.item_eat_red1(self.screen,mouthOpen)
             pygame.display.flip()
 
             for event in pygame.event.get():

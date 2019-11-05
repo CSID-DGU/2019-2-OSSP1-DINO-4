@@ -22,7 +22,7 @@ class button_detect(pygame.sprite.Sprite):
 
         hit=pygame.sprite.spritecollide(self,game.player_group,False)
         if hit:
-            game.BUTTON_ON=True
+            game.BUTTON_ON1=True
 
 #버튼이 눌렸을 때 버튼 이미지를 바꿔줌
 class button_image(pygame.sprite.Sprite):
@@ -38,7 +38,7 @@ class button_image(pygame.sprite.Sprite):
 
     def button_draw(self,screen):
        #버튼이 눌리지 않았다면, 눌리지 않은 버튼 이미지
-        if self.game.BUTTON_ON==False:
+        if self.game.BUTTON_ON1==False:
             self.image=pygame.image.load("tile/platform_tile_038.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(30,30))
         #버튼이 눌렸다면,눌린 버튼 이미지
@@ -48,7 +48,7 @@ class button_image(pygame.sprite.Sprite):
         
         self.rect=self.image.get_rect()
 
-        if self.game.BUTTON_ON==False:
+        if self.game.BUTTON_ON1==False:
             self.rect.x=10
             self.rect.y=350
             screen.blit(self.image,(self.rect.x,self.rect.y))
