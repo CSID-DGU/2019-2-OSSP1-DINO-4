@@ -13,17 +13,17 @@ class player(pygame.sprite.Sprite):
         self.movx=0
         self.movy=0
 
-        self.vel=7  #가속도
+        self.vel=10 #가속도
 
         #땅과 충돌검사
         self.contact = False
 
         #애니메이션 효과 위하여
         self.jump = False
-        self.direction="right"
+        self.direction="Right"
         self.frame=0
 
-        self.image=pygame.image.load("girl_image/Walk0.png").convert_alpha()
+        self.image=pygame.image.load("girl_image/Stand.png").convert_alpha()
         self.image=pygame.transform.scale(self.image,(50,50))
 
         #이미지 저장을 위한 변수 및 함수
@@ -31,7 +31,7 @@ class player(pygame.sprite.Sprite):
                         "girl_image/Walk4.png","girl_image/Walk5.png","girl_image/Walk6.png","girl_image/Walk7.png",
                         "girl_image/Walk8.png","girl_image/Walk9.png","girl_image/Walk10.png","girl_image/Walk11.png"
                         ,"girl_image/Walk12.png","girl_image/Walk13.png","girl_image/Walk14.png","girl_image/Walk15.png",
-                        "girl_image/Walk16.png","girl_image/Walk17.png","girl_image/Walk18.png","girl_image/Walk19.png"]
+                        "girl_image/Walk16.png","girl_image/Walk17.png","girl_image/Walk18.png"]
 
         #self.mask
         self.mask=pygame.mask.from_surface(self.image)
@@ -40,7 +40,7 @@ class player(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.topleft = [self.x,self.y]
 
-        
+    #애니메이션 효과
     def update(self,game,up, left, right):
         if up:
             if self.contact:
@@ -58,7 +58,7 @@ class player(pygame.sprite.Sprite):
                 self.image = pygame.image.load(self.walk_image[self.frame]).convert_alpha()
                 self.image=pygame.transform.scale(self.image,(50,50))
                 self.image=pygame.transform.flip(self.image,True,False)
-                if self.frame==19: self.frame=0
+                if self.frame==18: self.frame=0
             else:
                 self.image = pygame.image.load("girl_image/jump.png").convert_alpha()
                 self.image=pygame.transform.scale(self.image,(50,50))
@@ -71,16 +71,23 @@ class player(pygame.sprite.Sprite):
                 self.frame += 1
                 self.image = pygame.image.load(self.walk_image[self.frame]).convert_alpha()
                 self.image=pygame.transform.scale(self.image,(50,50))
-                if self.frame==19: self.frame=0
+                if self.frame==18: self.frame=0
             else:
                 self.image = pygame.image.load("girl_image/jump.png").convert_alpha()
                 self.image=pygame.transform.scale(self.image,(50,50))
 
-        if not (left or right):
+        if not (left or right) and self.direction=="right":
             self.movx = 0
+            self.image=pygame.image.load("girl_image/stand.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(50,50))
+        if not (left or right) and self.direction=="left":
+            self.movx = 0
+            self.image=pygame.image.load("girl_image/stand.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(50,50))
+            self.image=pygame.transform.flip(self.image,True,False)
         self.rect.x += self.movx
 
-        self.collide(self.movx, 0, game.world)
+        self.collide(self.movx, 0, game)
 
         if not self.contact:
             self.movy += 0.3
@@ -89,26 +96,27 @@ class player(pygame.sprite.Sprite):
             self.rect.y += self.movy
 
         if self.jump:
-            self.movy += 3
+            self.movy += 2.5
             self.rect.y += self.movy
             if self.contact == True:
                 self.jump = False
 
         self.contact = False
-        self.collide(0, self.movy, game.world)
+        self.collide(0, self.movy, game)
 
-    def collide(self, movx, movy, world):
+    #배경과 충돌검사
+    def collide(self, movx, movy, game):
         self.contact = False
-        for o in world:
-            if self.rect.colliderect(o):
-                if movx > 0:
-                    self.rect.right = o.rect.left
-                if movx < 0:
-                    self.rect.left = o.rect.right
-                if movy > 0:
-                    self.rect.bottom = o.rect.top
-                    self.movy = 0
-                    self.contact = True
-                if movy < 0:
-                    self.rect.top = o.rect.bottom
-                    self.movy = 0
+        hit=pygame.sprite.spritecollide(self,game.world,False,pygame.sprite.collide_mask)
+        for block in hit:
+            if movx>0:
+                self.rect.right=block.rect.left
+            if movx<0:
+                self.rect.left=block.rect.right
+            if movy>0:
+                self.rect.bottom=block.rect.top
+                self.movy=0
+                self.contact=True
+            if movy<0:
+                self.rect.top=block.rect.bottom
+                self.movy

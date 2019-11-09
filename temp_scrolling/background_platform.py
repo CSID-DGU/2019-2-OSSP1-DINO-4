@@ -13,10 +13,10 @@ class Platform(pygame.sprite.Sprite):
             self.image=pygame.image.load("tile/platform_tile_035.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
         elif case==3:
-            self.image=pygame.image.load("tile/platform_tile_009.png").convert_alpha()
+            self.image=pygame.image.load("tile/red_up.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
         elif case==4:
-            self.image=pygame.image.load("tile/platform_tile_016.png").convert_alpha()
+            self.image=pygame.image.load("tile/black.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
         elif case==5:
             self.image=pygame.image.load("tile/platform_tile_021.png").convert_alpha()
@@ -29,7 +29,9 @@ class Platform(pygame.sprite.Sprite):
             self.image=pygame.transform.scale(self.image,(w,h))
 
         self.rect = self.image.get_rect()
+        self.mask=pygame.mask.from_surface(self.image)
         self.rect.topleft=[x,y]
+
         
 class Level(object):
     '''Read a map and create a level'''
@@ -48,16 +50,27 @@ class Level(object):
                     platform = Platform(x, y,40,40,1)
                     self.world.append(platform)
                     game.all_sprite.add(self.world)
-                if col=="F":
+                elif col=="F":
                     platform=Platform(x, y,40,40,2)
                     self.world.append(platform)
                     game.all_sprite.add(self.world)
-                if col == "P":
+                elif col=="A":
+                    platform=Platform(x, y,40,80,3)
+                    self.world.append(platform)
+                    game.all_sprite.add(self.world)
+                elif col=="D":
+                    platform=Platform(x, y,40,40,4)
+                    self.world.append(platform)
+                    game.all_sprite.add(self.world)
+                elif col == "P":
                     self.player= player(x,y)
+                    game.player_sprite.add(self.player)
                     game.all_sprite.add(self.player)
+                    
                 x += 40
             y += 40
             x = 0
+
 
     def get_size(self):
         lines = self.level1
