@@ -146,6 +146,7 @@ class Player(pygame.sprite.Sprite):
             self.rect=self.image.get_rect()
             self.rect.x=self.user_position[0]
             self.rect.y=self.user_position[1]
+            print("left")
     
 
     def update(self):
