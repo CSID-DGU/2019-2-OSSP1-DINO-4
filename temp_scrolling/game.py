@@ -25,7 +25,8 @@ class Game:
         self.screen=pygame.display.set_mode((self.WIDTH,self.HEIGHT))
         self.screen_rect=self.screen.get_rect()
 
-        self.background=pygame.image.load("tile/background_image.png").convert_alpha()
+        self.background=pygame.image.load("environment/layers/back.png").convert_alpha()
+        self.background=pygame.transform.scale(self.background,(1000,700))
         self.background_rect = self.background.get_rect()
         
 
@@ -67,6 +68,7 @@ class Game:
         clock = pygame.time.Clock()
         background_=background() #sprite 아닌 background
         teleport_=teleport(self) #teleport
+        box_=box() #box
 
         #레벨,플레이어,배경sprite
         level = Level("level1")
@@ -81,6 +83,8 @@ class Game:
         self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
 
         while True:
+            
+            
             print(self.player.rect.x,self.player.rect.y)
             self.event()
 
@@ -92,17 +96,25 @@ class Game:
                 for y in range(0, asize[1], self.background_rect.h):
                     self.screen.blit(self.background, (x, y))
 
+            #배경그림
+            background_.background_blit(self)
+
             time_spent = self.tps(clock, FPS)
             self.camera.draw_sprites(self.screen, self.all_sprite)
+
+            
 
             #순간이동
             teleport_.sprite_def(self,self.player)
             if(teleport_.ready==True):
                 teleport_.collide_detect(self)
 
+            #box
+            box_.collide_detect(self,background_)
+
             #배경 update
             self.player.update(self,self.up, self.left, self.right)
             self.camera.update()
-            background_.background_blit(self)
+            
             pygame.display.flip()
             
