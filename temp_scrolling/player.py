@@ -41,7 +41,7 @@ class player(pygame.sprite.Sprite):
         self.rect.topleft = [self.x,self.y]
 
     #애니메이션 효과
-    def update(self,game,up, left, right):
+    def update(self,game,up,down,left, right):
         if up:
             if self.contact:
                 if self.direction == "right":
@@ -49,6 +49,24 @@ class player(pygame.sprite.Sprite):
                     self.image=pygame.transform.scale(self.image,(50,50))
                 self.jump = True
                 self.movy -= 20
+
+        if down:
+            if self.contact and self.direction=="right":
+                self.image=pygame.image.load("girl_image/stop.png").convert_alpha()
+                self.image=pygame.transform.scale(self.image,(50,50))
+            if self.contact and self.direction=="left":
+                self.image=pygame.image.load("girl_image/stop.png").convert_alpha()
+                self.image=pygame.transform.scale(self.image,(50,50))
+                self.image=pygame.transform.flip(self.image,True,False)
+
+        if not down and self.direction=="right":
+            self.image=pygame.image.load("girl_image/Stand.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(50,50))
+
+        if not down and self.direction=="left":
+            self.image=pygame.image.load("girl_image/Stand.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(50,50))
+            self.image=pygame.transform.flip(self.image,True,False)
 
         if left:
             self.direction = "left"
@@ -76,15 +94,8 @@ class player(pygame.sprite.Sprite):
                 self.image = pygame.image.load("girl_image/jump.png").convert_alpha()
                 self.image=pygame.transform.scale(self.image,(50,50))
 
-        if not (left or right) and self.direction=="right":
+        if not (left or right):
             self.movx = 0
-            self.image=pygame.image.load("girl_image/stand.png").convert_alpha()
-            self.image=pygame.transform.scale(self.image,(50,50))
-        if not (left or right) and self.direction=="left":
-            self.movx = 0
-            self.image=pygame.image.load("girl_image/stand.png").convert_alpha()
-            self.image=pygame.transform.scale(self.image,(50,50))
-            self.image=pygame.transform.flip(self.image,True,False)
         self.rect.x += self.movx
 
         self.collide(self.movx, 0, game)
