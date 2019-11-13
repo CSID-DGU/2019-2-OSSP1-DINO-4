@@ -165,8 +165,8 @@ class gameover:
         #SCORE 관련 표시하기
         if self.score>self.highscore:
             self.highscore=self.score
-            self.draw_text(self.screen,"NEW HIGH SCORE!",22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+40)
-            self.draw_text(self.screen,"Score: "+str(self.score),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+60)
+            self.draw_text(self.screen,"NEW HIGH SCORE!",22,SCREEN_WIDTH/2+200,SCREEN_HEIGHT/2+250)
+            self.draw_text(self.screen,">Highest Score: "+str(self.score),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
             with open(path.join(self.dir,HS_FILE),'w') as f:
                 f.write(str(self.score))
         else:

@@ -112,7 +112,19 @@ class Game:
             #Gameover
             if self.gameover:
                 gameover_.show_gameover_screen(self.score,self.dir)
+                #재초기화
+                self.all_sprite=pygame.sprite.Group()
+                self.player_sprite=pygame.sprite.Group()
+
+                #레벨,플레이어,배경sprite
+                level.create_level(0,0,self)
+                self.world = level.world
+                self.player = level.player
                 pygame.init()
+
+                self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
+
+
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
 
@@ -155,6 +167,7 @@ class Game:
             while buttonPressed==2:
                 buttonPressed=gameover_.pausePressed()
                 if buttonPressed==1:
+                    print("gameover buttonPressed들어옴")
                     self.gameover=True
                 break
 
