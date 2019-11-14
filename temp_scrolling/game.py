@@ -9,6 +9,7 @@ from teleport import *
 from background import *
 from gameover import *
 from trap import *
+from shot import *
 from os import path
 import time
 
@@ -16,16 +17,23 @@ global FPS
 global clock
 global time_spent
 
+#shot.py에 #총알 창 밖으로 나가면 초기화부분 맵 최종결정난 후 수정 필요
+
 class Game:
     def __init__(self):
 
         self.WIDTH=1000
         self.HEIGHT=700
 
+        #캐릭터의 움직임
         self.up=False
         self.left=False
         self.right=False
         self.down=False
+
+        #캐릭터 움직임(총알 방향 위해 필요)
+        self.ex_left=False
+        self.ex_right=False
 
         self.screen=pygame.display.set_mode((self.WIDTH,self.HEIGHT))
         self.screen_rect=self.screen.get_rect()
@@ -75,6 +83,10 @@ class Game:
                     self.left=True
                 if event.key==pygame.K_RIGHT:
                     self.right=True
+                if event.key==pygame.K_SPACE and self.shot_.bullet_state is "ready":
+                    bulletX=self.player.rect.x
+                    bulletY=self.player.rect.y
+                    self.shot_.shooting_setting(bulletX+30,bulletY+10)
             if event.type==pygame.KEYUP:
                 if event.key==pygame.K_UP:
                     self.up=False
@@ -82,8 +94,12 @@ class Game:
                     self.down=False
                 if event.key==pygame.K_LEFT:
                     self.left=False
+                    self.ex_left=True
+                    self.ex_right=False
                 if event.key==pygame.K_RIGHT:
                     self.right=False
+                    self.ex_left=False
+                    self.ex_right=True
 
 
     def main(self):
@@ -100,6 +116,7 @@ class Game:
         box_=box() #box
         fire_bomb1=bomb(self) #폭탄1
         #fire_bomb2=bomb(self) #폭탄2
+        self.shot_=shot(self) #총알
 
         #레벨,플레이어,배경sprite
         level = Level("level1")
@@ -169,12 +186,15 @@ class Game:
             if(teleport_.ready==True):
                 teleport_.collide_detect(self)
 
-            #box
+            #box제어
             box_.collide_detect(self,background_)
 
-            #폭탄
+            #폭탄제어
             GAME_OVER_FIRE=fire_bomb1.bomb_draw(self,self.fire_rect1,3)
             #GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2,2.5)
+
+            #공격제어
+            self.shot_.shooting()
 
             #점수 환산
             if self.start_time:
