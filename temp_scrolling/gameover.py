@@ -19,6 +19,7 @@ class gameover:
         self.textRect=self.textRect=self.text_objects("Instruction",FONT)
         self.highscore=highscore
         self.score=0
+        self.numOfPressedButton=0
 
         self.bg_sky=pygame.image.load("tile/sky.png").convert_alpha()
         self.bg_sky=pygame.transform.scale(self.bg_sky,(1000,700))
@@ -64,29 +65,27 @@ class gameover:
             pygame.draw.rect(self.screen,ac,(x,y,w,h))
             if click[0]==1 and action!=None:
                 if action=="restart":
-                    self.show_gameover_screen(self.score,self.dir)
+                    self.numOfPressedButton=1
+                elif action=="paused":
+                    return 2
+                elif action=="continue":
+                    self.numOfPressedButton=3
+                    return
                 elif action=="quit":
                     pygame.quit()
                     quit()
                     sys.exit()
-                elif action=="intro":
-                    gameover_.show_gameover_screen(self.score,self.dir)
-                elif action=="paused":
-                    print("pause됨")
-                    self.pausePressed()
-                elif action=="continue":
-                    pass
 
         else:
             pygame.draw.rect(self.screen,ic,(x,y,w,h))
+            return 0
         smalltext=pygame.font.Font("freesansbold.ttf",20)
         textsurf=self.text_objects(msg,smalltext)
         textrect=self.text_objects(msg,smalltext)
         self.draw_text(self.screen,msg,35,x+60,y)
 
     def pausePressed(self):
-        paused=True
-        while paused:
+        while True:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     pygame.quit()
@@ -103,12 +102,17 @@ class gameover:
             self.button("Continue",150,450,150,50,(134,199,127),(47,157,39),"continue")
             self.button("Restart",350,450,150,50,(103,153,255),(0,51,153),"restart")
             self.button("Quit",550,450,150,50,(241,95,95),(152,0,0),"quit")
+            if self.numOfPressedButton!=0:
+                if self.numOfPressedButton==1:
+                    self.numOfPressedButton=0
+                    return 1
+                self.numOfPressedButton=0
+                break
+
             pygame.display.update()
             self.clock.tick(30)
 
     def show_gameover_screen(self,score,dir):
-        global START_TIME
-
         HS_FILE="highscore.txt"
         self.score=score
         self.dir=dir
@@ -161,15 +165,15 @@ class gameover:
         #SCORE 관련 표시하기
         if self.score>self.highscore:
             self.highscore=self.score
-            self.draw_text(self.screen,"NEW HIGH SCORE!",22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+40)
-            self.draw_text(self.screen,"Score: "+str(self.score),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+60)
+            self.draw_text(self.screen,"NEW HIGH SCORE!",22,SCREEN_WIDTH/2+200,SCREEN_HEIGHT/2+250)
+            self.draw_text(self.screen,">Highest Score: "+str(self.score),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
             with open(path.join(self.dir,HS_FILE),'w') as f:
                 f.write(str(self.score))
         else:
             self.draw_text(self.screen,">Highest Score: "+str(self.highscore),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
         pygame.display.flip()
 
-        START_TIME=None #gameover이므로
+        #start_time=None #gameover이므로
         waiting=True
         while waiting:
             self.clock.tick(100000)
@@ -180,4 +184,3 @@ class gameover:
                 #아무키나 둘러도 가능하도록
                 if event.type==pygame.KEYUP:
                     waiting=False
-                    print(START_TIME)

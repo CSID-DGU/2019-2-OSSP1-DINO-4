@@ -40,7 +40,7 @@ class Game:
 
         #불 폭탄 떨어지는 초기위치 설정
         self.fire_rect1=[1800,1200]
-        self.fire_rect2=[1900,1200]
+        #self.fire_rect2=[1900,1200]
 
         self.gameover=True
 
@@ -99,7 +99,7 @@ class Game:
         teleport_=teleport(self) #teleport
         box_=box() #box
         fire_bomb1=bomb(self) #폭탄1
-        fire_bomb2=bomb(self) #폭탄2
+        #fire_bomb2=bomb(self) #폭탄2
 
         #레벨,플레이어,배경sprite
         level = Level("level1")
@@ -173,8 +173,8 @@ class Game:
             box_.collide_detect(self,background_)
 
             #폭탄
-            GAME_OVER_FIRE=fire_bomb1.bomb_draw(self,self.fire_rect1)
-            GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2)
+            GAME_OVER_FIRE=fire_bomb1.bomb_draw(self,self.fire_rect1,3)
+            #GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2,2.5)
 
             #점수 환산
             if self.start_time:
