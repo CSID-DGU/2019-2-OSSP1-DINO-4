@@ -32,15 +32,15 @@ class teleport(pygame.sprite.Sprite):
             self.player_state=1
 
         #위 빨간색
-        if player.rect.x>=1390 and player.rect.x<=1700 and player.rect.y>=550 and player.rect.y<=600:
+        if player.rect.x>=1900 and player.rect.x<=2200 and player.rect.y>=800 and player.rect.y<=900:
             self.image=pygame.image.load("tile/red_up.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(40,80))
 
             self.rect=self.image.get_rect()
             self.mask=pygame.mask.from_surface(self.image)
 
-            self.rect.x=1480
-            self.rect.y=560
+            self.rect.x=2000
+            self.rect.y=840
 
             self.ready=True
             self.player_state=2
@@ -73,6 +73,34 @@ class teleport(pygame.sprite.Sprite):
             self.ready=True
             self.player_state=4
 
+        #지하 파란색
+        if player.rect.x>=1600 and player.rect.x<=1900 and player.rect.y>=1100 and player.rect.y<=1200:
+            self.image=pygame.image.load("tile/blue_neon_down.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(80,40))
+
+            self.rect=self.image.get_rect()
+            self.mask=pygame.mask.from_surface(self.image)
+
+            self.rect.x=1680
+            self.rect.y=1130
+
+            self.ready=True
+            self.player_state=5
+
+        #위에 파란색
+        if player.rect.x>=1700 and player.rect.x<=1845 and player.rect.y<=240:
+            self.image=pygame.image.load("tile/blue_up.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(40,80))
+
+            self.rect=self.image.get_rect()
+            self.mask=pygame.mask.from_surface(self.image)
+
+            self.rect.x=1800
+            self.rect.y=110
+
+            self.ready=True
+            self.player_state=6
+
 
     def collide_detect(self,game):
         hits=pygame.sprite.spritecollide(self,game.player_sprite,False,pygame.sprite.collide_mask)
@@ -80,8 +108,8 @@ class teleport(pygame.sprite.Sprite):
         if hits:
             #아래 빨간색으로 들어가면 위 빨간색으로 나옴
             if self.player_state is 1 and game.player.direction is "right":
-                game.player.rect.x=1485
-                game.player.rect.y=590
+                game.player.rect.x=2010
+                game.player.rect.y=840
                 game.player.direction="left"
             #위쪽 빨간색으로 들어가면 아래 빨간색으로 나옴
             if self.player_state is 2 and game.player.direction is "left":
@@ -89,7 +117,7 @@ class teleport(pygame.sprite.Sprite):
                 game.player.rect.y=1190
                 game.player.direction="right"
             #위 분홍색으로 들어가면 아래 분홍색으로 나옴
-            if self.player_state is 3 and game.player.direction is "right":
+            if game.background_.ispink is True and self.player_state is 3 and game.player.direction is "right":
                 game.player.rect.x=1680
                 game.player.rect.y=1400
                 game.player.movy-=30
@@ -98,6 +126,16 @@ class teleport(pygame.sprite.Sprite):
                 game.player.rect.x=1860
                 game.player.rect.y=850
                 game.player.direction="left"
+            #지하 파란색으로 들어가면 위쪽 파란색으로 나옴
+            if self.player_state is 5:
+                game.player.rect.x=1795
+                game.player.rect.y=110
+                game.player.direction="left"
+            #위쪽 파란색으로 들어가면 지하 파란색으로 나옴
+            if self.player_state is 6 and game.player.direction is "right":
+                game.player.rect.x=1680
+                game.player.rect.y=1135
+                game.player.movy+=30
             
 
 class box(pygame.sprite.Sprite):
