@@ -10,6 +10,7 @@ from background import *
 from gameover import *
 from trap import *
 from shot import *
+from item import *
 from os import path
 
 import time
@@ -120,6 +121,22 @@ class Game:
         #fire_bomb2=bomb(self) #폭탄2
         self.shot_=shot(self) #총알
 
+
+        #아이템
+        item1=item(self)
+        item2=item(self)
+        item3=item(self)
+        item4=item(self)
+        item5=item(self)
+        item6=item(self)
+        item7=item(self)
+        item8=item(self)
+        item9=item(self)
+        item10=item(self)
+        item11=item(self)
+
+
+
         #레벨,플레이어,배경sprite
         level = Level("level1")
         level.create_level(0,0,self)
@@ -161,6 +178,19 @@ class Game:
                 pygame.init()
 
                 self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
+
+                #아이템
+                item1=item(self)
+                item2=item(self)
+                item3=item(self)
+                item4=item(self)
+                item5=item(self)
+                item6=item(self)
+                item7=item(self)
+                item8=item(self)
+                item9=item(self)
+                item10=item(self)
+                item11=item(self)
 
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
@@ -218,7 +248,19 @@ class Game:
 
             #얼굴인식
             mouthOpen=face.face_recognition(self.screen)
-            print(mouthOpen)
+            #아이템
+            item1.draw_item(self,2400,1200,mouthOpen)
+            item2.draw_item(self,400,600,mouthOpen)
+            item3.draw_item(self,800,900,mouthOpen)
+            item4.draw_item(self,800,700,mouthOpen)
+            item5.draw_item(self,1050,800,mouthOpen)
+            item6.draw_item(self,2390,1300,mouthOpen)
+            item7.draw_item(self,1750,1390,mouthOpen)
+            item8.draw_item(self,1950,1400,mouthOpen)
+            item9.draw_item(self,1900,1419,mouthOpen)
+            item10.draw_item(self,2210,1210,mouthOpen)
+            item11.draw_item(self,2550,1350,mouthOpen)
+
 
 
             #배경 update

@@ -43,7 +43,7 @@ class bomb(pygame.sprite.Sprite):
             fire[0]=random.randrange(1700,2400)
             fire[1]=1200
             game.screen.blit(self.image,RelRect(fire[0],fire[1],20,20,game.camera))
-        
+
         #충돌하지 않음
         else:
             if fire[1]>1440:

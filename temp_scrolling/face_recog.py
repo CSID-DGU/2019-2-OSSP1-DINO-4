@@ -55,7 +55,7 @@ class face():
                 print("closed")
                 return False
 
-        cv2.imshow("Frame", frame)
+        #cv2.imshow("Frame", frame)
         self.cap.release()
         #self.out.release()
         cv2.destroyAllWindows()
