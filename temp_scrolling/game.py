@@ -123,7 +123,7 @@ class Game:
         #초기화
         FPS=30
         clock = pygame.time.Clock()
-        background_=background() #sprite 아닌 background
+        self.background_=background() #sprite 아닌 background
         teleport_=teleport(self) #teleport
         box_=box() #box
         fire_bomb1=bomb(self) #폭탄1
@@ -200,7 +200,7 @@ class Game:
                 level.create_level(0,0,self)
                 self.world = level.world
                 self.player = level.player
-                background_.ispink=False
+                self.background_.ispink=False
                 pygame.init()
 
                 self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
