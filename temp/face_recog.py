@@ -32,7 +32,6 @@ class face():
         print (" ")
 
     def face_recognition(self,screen):
-
         self.ret,self.frame = self.cap.read() #영상 읽어들임
         self.frame = cv2.flip(self.frame, 1)
         #self.dets = self.detector(self.frame, 0) #rects
