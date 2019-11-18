@@ -1,6 +1,7 @@
 import pygame
 
 from player import *
+from trap import *
 
 def RelRect(x,y,w,h,camera):
     return pygame.Rect(x-camera.rect.x, y-camera.rect.y, w, h)
@@ -63,8 +64,23 @@ class Platform(pygame.sprite.Sprite):
         elif case=="I": #상자
             self.image=pygame.image.load("tile/platform_tile_023.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
+        elif case=="J": #벽돌
+            self.image=pygame.image.load("environment/tiles/tile_in1.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(w,h))
+        elif case=="K": #공중에 떠있는 땅 왼쪽
+            self.image=pygame.image.load("environment/tiles/tile-grass-round-left.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(w,h))
+        elif case=="L": #공중에 떠있는 땅 가운데
+            self.image=pygame.image.load("environment/tiles/tile-grass-round-middle.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(w,h))
+        elif case=="M": #공중에 떠있는 땅 오른쪽
+            self.image=pygame.image.load("environment/tiles/tile-grass-round-right.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(w,h))
+        elif case=="N": #풀
+            self.image=pygame.image.load("environment/tiles/grass.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(w,h))
 
-
+    
         self.rect = self.image.get_rect()
         self.mask=pygame.mask.from_surface(self.image)
         self.rect.topleft=[x,y]
@@ -83,10 +99,9 @@ class Level(object):
 
         for row in self.level1:
             for col in row:
-                #초록땅
                 if col == "1" or col=="2" or col=="3" or col=="4" or col=="5" or col=="6"or col=="7"\
                     or col=="8"or col=="9"or col=="A"or col=="B"or col=="C"or col=="D" or col=="E"\
-                    or col=="G" or col=="I":
+                    or col=="G" or col=="I" or col=="J" or col=="K" or col=="L" or col=="M" or col=="N":
                     platform = Platform(x, y,40,40,col)
                     self.world.append(platform)
                     game.all_sprite.add(self.world)
@@ -98,6 +113,10 @@ class Level(object):
                     platform = Platform(x, y,160,280,col)
                     self.world.append(platform)
                     game.all_sprite.add(self.world)
+                if col=="*":
+                    platform=arrow(game,x,y,1)
+                    self.world.append(platform)
+                    game.arrow_sprites.add(platform)
                 elif col == "P":
                     self.player= player(x,y)
                     game.player_sprite.add(self.player)
@@ -106,7 +125,6 @@ class Level(object):
                 x += 40
             y += 40
             x = 0
-
 
     def get_size(self):
         lines = self.level1

@@ -15,6 +15,7 @@ import dlib
 import glob
 from skimage import io
 import numpy as np
+from network import *
 import cv2
 
 FRAME=0
@@ -97,6 +98,19 @@ class Game:
         self.player1.user_position[0]=self.player1.rect.x
         self.player1.user_position[1]=self.player1.rect.y
 
+<<<<<<< HEAD
+=======
+    #network로 data 전송
+    def send_data(self):
+        """
+        Send position to server
+        :return: None
+        """
+        data = str(self.net.id) + ":" + str(self.player1.rect.x) + "," + str(self.player1.rect.y)
+        reply = self.net.send(data)
+        return reply
+
+>>>>>>> character
     #전송할 데이터를 parse하는 함수
     def parse_data(self,data):
         try:
@@ -125,6 +139,10 @@ class Game:
         #sprite 그룹에 추가할 sprite 선언
         self.player1=Player(self)
         self.player2=Player(self)# 추가
+<<<<<<< HEAD
+=======
+        self.net=Network()
+>>>>>>> character
         self.button1=button_image(self)
         self.dino_1=Dino(self,100,125) #100,125
 
@@ -165,9 +183,20 @@ class Game:
         item_=item(self)
         self.shot_=shot(self.screen,self)
         item_.item_display(self.screen) #아이템은 사라질 수 있으므로 while 밖
-        face=face_recog.face(self)
+        #face=face_recog.face(self)
         gameover_=gameover(self.screen,self.clock)
+        n=Network()
 
+<<<<<<< HEAD
+=======
+        #2플레이어 게임 연결
+        try:
+            game = n.send("get")
+        except:
+            run = False
+            print("Couldn't get game")
+
+>>>>>>> character
         while True:
 
             if GAME_OVER or GAME_OVER_FIRE or GAME_OVER_ARROW:
@@ -255,10 +284,17 @@ class Game:
             if self.player1.rect.left<0:
                 self.player1.rect.left=0
 
+<<<<<<< HEAD
             #self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
 
             #self.player2.update_sprite(self.screen,self)#추가ㄹ
             #self.player2.update()
+=======
+            self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
+
+            self.player2.update_sprite(self.screen,self)#추가ㄹ
+            self.player2.update()
+>>>>>>> character
             self.player1.update_sprite(self.screen,self)
             self.all_sprites.update()
 

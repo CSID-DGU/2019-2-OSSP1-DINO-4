@@ -11,6 +11,7 @@ from gameover import *
 from trap import *
 from shot import *
 from item import *
+from button_detect import *
 from os import path
 
 import time
@@ -21,6 +22,9 @@ global clock
 global time_spent
 
 #shot.py에 #총알 창 밖으로 나가면 초기화부분 맵 최종결정난 후 수정 필요
+
+def RelRect(x,y,w,h,camera):
+    return pygame.Rect(x-camera.rect.x, y-camera.rect.y, w, h)
 
 class Game:
     def __init__(self):
@@ -38,6 +42,9 @@ class Game:
         self.ex_left=False
         self.ex_right=False
 
+        #버튼 눌렸는지 확인
+        self.BUTTON_ON1=False
+
         self.screen=pygame.display.set_mode((self.WIDTH,self.HEIGHT))
         self.screen_rect=self.screen.get_rect()
 
@@ -50,8 +57,9 @@ class Game:
         self.start_time=0
 
         #불 폭탄 떨어지는 초기위치 설정
-        self.fire_rect1=[1800,1200]
-        #self.fire_rect2=[1900,1200]
+        self.fire_rect1=[1950,1200]
+        self.fire_rect2=[2000,1200]
+        self.fire_Rect3=[2100,1200]
 
         self.gameover=True
 
@@ -106,10 +114,11 @@ class Game:
 
 
     def main(self):
-        global GAME_OVER_FIRE
+        global GAME_OVER_FIRE,GAME_OVER_ARROW
         #spite_group 정의
         self.all_sprite=pygame.sprite.Group()
         self.player_sprite=pygame.sprite.Group()
+        self.arrow_sprites=pygame.sprite.Group()
 
         #초기화
         FPS=30
@@ -118,7 +127,8 @@ class Game:
         teleport_=teleport(self) #teleport
         box_=box() #box
         fire_bomb1=bomb(self) #폭탄1
-        #fire_bomb2=bomb(self) #폭탄2
+        fire_bomb2=bomb(self) #폭탄2
+        fire_bomb3=bomb(self) #폭탄3
         self.shot_=shot(self) #총알
 
 
@@ -136,6 +146,15 @@ class Game:
         item11=item(self)
 
 
+        #창살
+        self.arrow_trap1=arrow(self,360,620,0)
+        self.arrow_trap2=arrow(self,1840,1420,0)
+        #self.arrow_trap3=arrow(self,500,550)
+        #self.arrow_trap4=arrow(self,150,330)
+
+        #버튼
+        self.button_detect_1=button_detect() #버튼 바꼈는지 확인
+        self.button1=button_image(self) #버튼 눌렸을 때 이미지 바꿔줌
 
         #레벨,플레이어,배경sprite
         level = Level("level1")
@@ -143,6 +162,10 @@ class Game:
         self.world = level.world
         self.player = level.player
 
+        
+        #sprite 그룹에 sprite 추가
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+        self.world.append(self.button1)
 
         #함수정의
         pygame.init()
@@ -159,7 +182,7 @@ class Game:
 
         while True:
             #Gameover
-            if self.gameover or GAME_OVER_FIRE:
+            if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
                 gameover_.show_gameover_screen(self.score,self.dir)
                 #재초기화
                 self.up=False
@@ -167,8 +190,11 @@ class Game:
                 self.right=False
                 self.left=False
 
+                self.BUTTON_ON1=False
+
                 self.all_sprite=pygame.sprite.Group()
                 self.player_sprite=pygame.sprite.Group()
+                self.arrow_sprites=pygame.sprite.Group()
 
                 #레벨,플레이어,배경sprite
                 level.create_level(0,0,self)
@@ -192,10 +218,16 @@ class Game:
                 item10=item(self)
                 item11=item(self)
 
+                #sprite 그룹에 sprite 추가
+                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
                 GAME_OVER_FIRE=False
 
+                GAME_OVER_ARROW=False
+
+            #player 좌표 확인
             #print(self.player.rect.x,self.player.rect.y)
             self.event()
 
@@ -209,7 +241,7 @@ class Game:
                     self.screen.blit(self.background, (x, y))
 
             #배경그림
-            background_.background_blit(self)
+            self.background_.background_blit(self)
 
             time_spent = self.tps(clock, FPS)
             self.camera.draw_sprites(self.screen, self.all_sprite)
@@ -220,14 +252,22 @@ class Game:
                 teleport_.collide_detect(self)
 
             #box제어
-            box_.collide_detect(self,background_)
+            box_.collide_detect(self,self.background_)
 
             #폭탄제어
             GAME_OVER_FIRE=fire_bomb1.bomb_draw(self,self.fire_rect1,3)
-            #GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2,2.5)
+            GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2,2.5)
+            GAME_OVER_FIRE=fire_bomb3.bomb_draw(self,self.fire_Rect3,3.8)
+
+            #버튼 제어
+            self.button_detect_1.detect(self.screen,self)
+            self.button1.button_draw(self)
 
             #공격제어
             self.shot_.shooting()
+
+            #창살제어
+            GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
             #점수 환산
             if self.start_time:
@@ -262,6 +302,7 @@ class Game:
             item11.draw_item(self,2550,1350,mouthOpen)
 
 
+            #print(mouthOpen)
 
             #배경 update
             self.player.update(self,self.up,self.down,self.left, self.right)
