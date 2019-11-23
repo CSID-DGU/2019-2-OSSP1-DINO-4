@@ -77,7 +77,7 @@ class Platform(pygame.sprite.Sprite):
             self.image=pygame.image.load("environment/tiles/tile-grass-round-right.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
         elif case=="N": #풀
-            self.image=pygame.image.load("environment/tiles/grass.png").convert_alpha()
+            self.image=pygame.image.load("tile/bush.png").convert_alpha()
             self.image=pygame.transform.scale(self.image,(w,h))
 
     

@@ -7,10 +7,11 @@ from background_platform import *
 from player import *
 from teleport import *
 from background import *
-from button_detect import *
 from gameover import *
 from trap import *
 from shot import *
+from item import *
+from button_detect import *
 from os import path
 
 import time
@@ -130,11 +131,36 @@ class Game:
         fire_bomb3=bomb(self) #폭탄3
         self.shot_=shot(self) #총알
 
+
+        #아이템
+        item1=item(self)
+        item2=item(self)
+        item3=item(self)
+        item4=item(self)
+        item5=item(self)
+        item6=item(self)
+        item7=item(self)
+        item8=item(self)
+        item9=item(self)
+        item10=item(self)
+        item11=item(self)
+
+
         #창살
         self.arrow_trap1=arrow(self,360,620,0)
         self.arrow_trap2=arrow(self,1840,1420,0)
-        #self.arrow_trap3=arrow(self,500,550)
-        #self.arrow_trap4=arrow(self,150,330)
+        self.arrow_trap3=arrow(self,1880,1420,0)
+        self.arrow_trap4=arrow(self,1920,1420,0)
+        self.arrow_trap5=arrow(self,1960,1420,0)
+        self.arrow_trap6=arrow(self,2000,1420,0)
+        self.arrow_trap7=arrow(self,2040,1420,0)
+        self.arrow_trap8=arrow(self,2080,1420,0)
+        self.arrow_trap9=arrow(self,2120,1420,0)
+        self.arrow_trap10=arrow(self,2160,1420,0)
+        self.arrow_trap11=arrow(self,2100,1420,0)
+        self.arrow_trap12=arrow(self,2140,1420,0)
+        self.arrow_trap13=arrow(self,2180,1420,0)
+        self.arrow_trap14=arrow(self,2120,1420,0)
 
         #버튼
         self.button_detect_1=button_detect() #버튼 바꼈는지 확인
@@ -145,9 +171,11 @@ class Game:
         level.create_level(0,0,self)
         self.world = level.world
         self.player = level.player
+
         
         #sprite 그룹에 sprite 추가
-        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
+            self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,self.arrow_trap14)
         self.world.append(self.button1)
 
         #함수정의
@@ -161,8 +189,7 @@ class Game:
         #시간 표시 글자색
         TEXT_COLOR=(0,0,0)
         BG_COLOR=(255,255,255)
-
-
+        print(self.arrow_sprites)
         while True:
             #Gameover
             if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
@@ -179,6 +206,7 @@ class Game:
                 self.player_sprite=pygame.sprite.Group()
                 self.arrow_sprites=pygame.sprite.Group()
 
+
                 #레벨,플레이어,배경sprite
                 level.create_level(0,0,self)
                 self.world = level.world
@@ -186,14 +214,30 @@ class Game:
                 self.background_.ispink=False
                 pygame.init()
 
-                #sprite 그룹에 sprite 추가
-                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
-
                 self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
+
+                #아이템
+                item1=item(self)
+                item2=item(self)
+                item3=item(self)
+                item4=item(self)
+                item5=item(self)
+                item6=item(self)
+                item7=item(self)
+                item8=item(self)
+                item9=item(self)
+                item10=item(self)
+                item11=item(self)
+
+                #sprite 그룹에 sprite 추가
+                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
+                    self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,\
+                        self.arrow_trap14)
 
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
                 GAME_OVER_FIRE=False
+
                 GAME_OVER_ARROW=False
 
             #player 좌표 확인
@@ -203,6 +247,7 @@ class Game:
             #화면 이동
             asize = ((self.screen_rect.w // self.background_rect.w + 1) * self.background_rect.w, (self.screen_rect.h // self.background_rect.h + 1) * self.background_rect.h)
             bg = pygame.Surface(asize)
+
 
             for x in range(0, asize[0], self.background_rect.w):
                 for y in range(0, asize[1], self.background_rect.h):
@@ -235,6 +280,12 @@ class Game:
             self.shot_.shooting()
 
             #창살제어
+            if self.BUTTON_ON1 is True:
+                print("remove")
+                self.arrow_sprites.remove(self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,self.arrow_trap8,self.arrow_trap9,\
+                self.arrow_trap10,self.arrow_trap11)
+                print(self.arrow_sprites)
+            
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
             #점수 환산
@@ -256,10 +307,23 @@ class Game:
 
             #얼굴인식
             mouthOpen=face.face_recognition(self.screen)
+            #아이템
+            item1.draw_item(self,2400,1200,mouthOpen)
+            item2.draw_item(self,400,600,mouthOpen)
+            item3.draw_item(self,800,900,mouthOpen)
+            item4.draw_item(self,800,700,mouthOpen)
+            item5.draw_item(self,1050,800,mouthOpen)
+            item6.draw_item(self,2390,1300,mouthOpen)
+            item7.draw_item(self,1750,1390,mouthOpen)
+            item8.draw_item(self,1950,1400,mouthOpen)
+            item9.draw_item(self,1900,1419,mouthOpen)
+            item10.draw_item(self,2210,1210,mouthOpen)
+            item11.draw_item(self,2550,1350,mouthOpen)
+
+
             #print(mouthOpen)
 
             #배경 update
             self.player.update(self,self.up,self.down,self.left, self.right)
             self.camera.update()
             pygame.display.flip()
-
