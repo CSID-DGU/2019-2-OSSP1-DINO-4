@@ -189,7 +189,6 @@ class Game:
         #시간 표시 글자색
         TEXT_COLOR=(0,0,0)
         BG_COLOR=(255,255,255)
-        print(self.arrow_sprites)
         while True:
             #Gameover
             if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
@@ -281,10 +280,8 @@ class Game:
 
             #창살제어
             if self.BUTTON_ON1 is True:
-                print("remove")
                 self.arrow_sprites.remove(self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,self.arrow_trap8,self.arrow_trap9,\
                 self.arrow_trap10,self.arrow_trap11)
-                print(self.arrow_sprites)
             
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
