@@ -149,8 +149,18 @@ class Game:
         #창살
         self.arrow_trap1=arrow(self,360,620,0)
         self.arrow_trap2=arrow(self,1840,1420,0)
-        #self.arrow_trap3=arrow(self,500,550)
-        #self.arrow_trap4=arrow(self,150,330)
+        self.arrow_trap3=arrow(self,1880,1420,0)
+        self.arrow_trap4=arrow(self,1920,1420,0)
+        self.arrow_trap5=arrow(self,1960,1420,0)
+        self.arrow_trap6=arrow(self,2000,1420,0)
+        self.arrow_trap7=arrow(self,2040,1420,0)
+        self.arrow_trap8=arrow(self,2080,1420,0)
+        self.arrow_trap9=arrow(self,2120,1420,0)
+        self.arrow_trap10=arrow(self,2160,1420,0)
+        self.arrow_trap11=arrow(self,2100,1420,0)
+        self.arrow_trap12=arrow(self,2140,1420,0)
+        self.arrow_trap13=arrow(self,2180,1420,0)
+        self.arrow_trap14=arrow(self,2120,1420,0)
 
         #버튼
         self.button_detect_1=button_detect() #버튼 바꼈는지 확인
@@ -164,7 +174,8 @@ class Game:
 
         
         #sprite 그룹에 sprite 추가
-        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
+            self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,self.arrow_trap14)
         self.world.append(self.button1)
 
         #함수정의
@@ -178,8 +189,7 @@ class Game:
         #시간 표시 글자색
         TEXT_COLOR=(0,0,0)
         BG_COLOR=(255,255,255)
-
-
+        print(self.arrow_sprites)
         while True:
             #Gameover
             if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
@@ -195,6 +205,7 @@ class Game:
                 self.all_sprite=pygame.sprite.Group()
                 self.player_sprite=pygame.sprite.Group()
                 self.arrow_sprites=pygame.sprite.Group()
+
 
                 #레벨,플레이어,배경sprite
                 level.create_level(0,0,self)
@@ -219,7 +230,9 @@ class Game:
                 item11=item(self)
 
                 #sprite 그룹에 sprite 추가
-                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+                self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
+                    self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,\
+                        self.arrow_trap14)
 
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
@@ -267,6 +280,12 @@ class Game:
             self.shot_.shooting()
 
             #창살제어
+            if self.BUTTON_ON1 is True:
+                print("remove")
+                self.arrow_sprites.remove(self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,self.arrow_trap8,self.arrow_trap9,\
+                self.arrow_trap10,self.arrow_trap11)
+                print(self.arrow_sprites)
+            
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
             #점수 환산

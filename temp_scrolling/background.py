@@ -31,7 +31,7 @@ class background:
 
         #창살
         self.arrow=pygame.image.load("tile/platform_tile_064.png").convert_alpha()
-        self.arrow=pygame.transform.scale(self.arrow,(60,20))
+        self.arrow=pygame.transform.scale(self.arrow,(40,20))
 
         #박스
         self.box=pygame.image.load("tile/box_make.png").convert_alpha()
@@ -64,7 +64,13 @@ class background:
 
         #창살
         game.screen.blit(self.arrow,RelRect(360,620,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+
+        if game.BUTTON_ON1 is False:
+            for i in range (0,13):
+                game.screen.blit(self.arrow,RelRect(1840+(40*i),1420,40,20,game.camera))
+        else:
+            for i in range (0,3):
+                game.screen.blit(self.arrow,RelRect(1840+(200*i),1420,40,20,game.camera))
         """
         game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
         game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
