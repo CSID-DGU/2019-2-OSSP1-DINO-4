@@ -39,14 +39,14 @@ class bomb(pygame.sprite.Sprite):
 
         #충돌했다면
         if hits:
-            fire[0]=random.randrange(1900,2400)
+            fire[0]=random.randrange(1800,2400)
             fire[1]=1200
             game.screen.blit(self.image,RelRect(fire[0],fire[1],20,20,game.camera))
         
         #충돌하지 않음
         else:
             if fire[1]>1440:
-                fire[0]=random.randrange(1900,2400)
+                fire[0]=random.randrange(1800,2400)
                 fire[1]=1200
                 game.screen.blit(self.image,RelRect(fire[0],fire[1],20,20,game.camera))
 
@@ -84,3 +84,49 @@ class arrow(pygame.sprite.Sprite):
             GAME_OVER=True
             return GAME_OVER
 
+class following_fire(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        #불의 초기위치 정하기 위함
+        self.first=True
+
+        #불 자연스럽게 움직이게 하기 위해서
+        self.count=0
+
+        #fire image 불러옴
+        self.image=pygame.image.load("tile/fire_follow.png").convert_alpha()
+        self.image=pygame.transform.scale(self.image,(20,20))
+
+        self.mask=pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+
+    def follow(self,game,x,y):
+        global GAME_OVER
+
+        if self.first is True or abs(game.player.rect.x-self.rect.x)>200:
+            self.rect.x=game.player.rect.x+random.randrange(-80,-40)
+            self.rect.y=game.player.rect.y+random.randrange(-20,20)
+            self.first=False
+        elif self.first is False and self.count is not 60:
+            self.rect.x+=4
+            self.rect.y+=random.randrange(-3,3)
+        else:
+            self.rect.x=game.player.rect.x+random.randrange(-80,-40)
+            self.rect.y=game.player.rect.y+random.randrange(-20,20)
+            self.count=0
+
+        #self와 배경의 땅과의 충돌 검사
+        hits=pygame.sprite.spritecollide(self,game.world,False,pygame.sprite.collide_mask)
+        #self와 캐릭터의 충돌 검사
+        hits_character=pygame.sprite.spritecollide(self,game.player_sprite,False,pygame.sprite.collide_mask)
+
+        if hits:
+            self.rect.x=game.player.rect.x+random.randrange(-80,-45)
+            self.rect.y=game.player.rect.y+random.randrange(-20,20)
+        else:
+            game.screen.blit(self.image,RelRect(self.rect.x,self.rect.y,20,20,game.camera))
+
+        if hits_character:
+            GAME_OVER=True
+            return GAME_OVER

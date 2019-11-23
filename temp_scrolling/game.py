@@ -145,7 +145,6 @@ class Game:
         item10=item(self)
         item11=item(self)
 
-
         #창살
         self.arrow_trap1=arrow(self,360,620,0)
         self.arrow_trap2=arrow(self,1840,1420,0)
@@ -157,14 +156,17 @@ class Game:
         self.arrow_trap8=arrow(self,2080,1420,0)
         self.arrow_trap9=arrow(self,2120,1420,0)
         self.arrow_trap10=arrow(self,2160,1420,0)
-        self.arrow_trap11=arrow(self,2100,1420,0)
-        self.arrow_trap12=arrow(self,2140,1420,0)
-        self.arrow_trap13=arrow(self,2180,1420,0)
-        self.arrow_trap14=arrow(self,2120,1420,0)
+        self.arrow_trap11=arrow(self,2200,1420,0)
+        self.arrow_trap12=arrow(self,2240,1420,0)
+        self.arrow_trap13=arrow(self,2280,1420,0)
+        self.arrow_trap14=arrow(self,2320,1420,0)
 
         #버튼
         self.button_detect_1=button_detect() #버튼 바꼈는지 확인
         self.button1=button_image(self) #버튼 눌렸을 때 이미지 바꿔줌
+
+        #캐릭터 따라오는 불
+        self.fire_enemy=following_fire()
 
         #레벨,플레이어,배경sprite
         level = Level("level1")
@@ -189,8 +191,8 @@ class Game:
         #시간 표시 글자색
         TEXT_COLOR=(0,0,0)
         BG_COLOR=(255,255,255)
-        print(self.arrow_sprites)
         while True:
+            print(self.player.rect.x,self.player.rect.y)
             #Gameover
             if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
                 gameover_.show_gameover_screen(self.score,self.dir)
@@ -201,6 +203,7 @@ class Game:
                 self.left=False
 
                 self.BUTTON_ON1=False
+                self.fire_enemy.first=True
 
                 self.all_sprite=pygame.sprite.Group()
                 self.player_sprite=pygame.sprite.Group()
@@ -272,6 +275,13 @@ class Game:
             GAME_OVER_FIRE=fire_bomb2.bomb_draw(self,self.fire_rect2,2.5)
             GAME_OVER_FIRE=fire_bomb3.bomb_draw(self,self.fire_Rect3,3.8)
 
+            #캐릭터 따라오는 불 제어
+            if self.player.rect.x>=2200 and self.player.rect.x<=3240 and self.player.rect.y>=560 and self.player.rect.y<=880:
+                GAME_OVER_FIRE=self.fire_enemy.follow(self,self.player.rect.x,self.player.rect.y)
+                self.fire_enemy.count+=1
+            else:
+                self.fire_enemy.first=True
+
             #버튼 제어
             self.button_detect_1.detect(self.screen,self)
             self.button1.button_draw(self)
@@ -281,10 +291,8 @@ class Game:
 
             #창살제어
             if self.BUTTON_ON1 is True:
-                print("remove")
                 self.arrow_sprites.remove(self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,self.arrow_trap8,self.arrow_trap9,\
-                self.arrow_trap10,self.arrow_trap11)
-                print(self.arrow_sprites)
+                self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,self.arrow_trap14)
             
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
@@ -319,6 +327,7 @@ class Game:
             item9.draw_item(self,1900,1419,mouthOpen)
             item10.draw_item(self,2210,1210,mouthOpen)
             item11.draw_item(self,2550,1350,mouthOpen)
+
 
 
             #print(mouthOpen)

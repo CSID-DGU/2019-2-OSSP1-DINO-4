@@ -33,13 +33,23 @@ class background:
         self.arrow=pygame.image.load("tile/platform_tile_064.png").convert_alpha()
         self.arrow=pygame.transform.scale(self.arrow,(40,20))
 
+        self.arrow_turn=pygame.image.load("tile/platform_tile_064.png").convert_alpha()
+        self.arrow_turn=pygame.transform.scale(self.arrow_turn,(40,20))
+        self.arrow_turn=pygame.transform.flip(self.arrow_turn,True,True)
+
         #박스
         self.box=pygame.image.load("tile/box_make.png").convert_alpha()
         self.box=pygame.transform.scale(self.box,(320,200))
 
+        #바닥 불
+        self.water=pygame.image.load("tile/fire-flames.png").convert_alpha()
+        self.water=pygame.transform.scale(self.water,(40,40))
+
+        self.cnt=1
+
     def background_blit(self,game):
         #background
-        #풀
+        #1
         game.screen.blit(self.background_green,RelRect(520,520,300,1000,game.camera))
         game.screen.blit(self.background_green,RelRect(820,520,300,1000,game.camera))
         game.screen.blit(self.background_green,RelRect(1120,520,300,1000,game.camera))
@@ -66,24 +76,37 @@ class background:
         game.screen.blit(self.arrow,RelRect(360,620,40,20,game.camera))
 
         if game.BUTTON_ON1 is False:
-            for i in range (0,13):
+            for i in range (0,6):
                 game.screen.blit(self.arrow,RelRect(1840+(40*i),1420,40,20,game.camera))
         else:
             for i in range (0,3):
                 game.screen.blit(self.arrow,RelRect(1840+(200*i),1420,40,20,game.camera))
-        """
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
-        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))"""
+        
 
+        for i in range(0,28):
+            game.screen.blit(self.water,RelRect(2240+(i*40),880,1120,20,game.camera))
+        
+
+        game.screen.blit(self.arrow_turn,RelRect(2320,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+40,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+160,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+440,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+480,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+800,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+840,840,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+880,840,40,20,game.camera))
+
+        game.screen.blit(self.arrow_turn,RelRect(2320+280,760,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+320,760,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+(14*40),760,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+(15*40),760,40,20,game.camera))
+
+        game.screen.blit(self.arrow_turn,RelRect(2320+(40*1),720,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+(40*2),720,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+(40*16),720,40,20,game.camera))
+        game.screen.blit(self.arrow_turn,RelRect(2320+(40*17),720,40,20,game.camera))
+
+        
         #박스
         if game.BUTTON_ON1==True:
             game.screen.blit(self.box,RelRect(2360,1240,320,200,game.camera))
@@ -98,18 +121,4 @@ class background:
         game.screen.blit(self.blue_up,RelRect(1800,80,40,80,game.camera))
         game.screen.blit(self.blue_down,RelRect(1680,1130,40,80,game.camera))
 
-"""
-    def button_on_draw(self,game):
-        for i in range 8:
-            game.screen.blit(self.box,RelRect(2360+i,1400,40,40,game.camera))
-        for i in range 7:
-            game.screen.blit(self.box,RelRect(2400+i,1440,40,40,game.camera))
-        for i in range 6:
-            game.screen.blit(self.box,RelRect(2440+i,1480,40,40,game.camera))
-        for i in range 5:
-            game.screen.blit(self.box,RelRect(2480+i,1520,40,40,game.camera))
-        for i in range 3:
-            game.screen.blit(self.box,RelRect(2540+i,1560,40,40,game.camera))
 
-        
-        """
