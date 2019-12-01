@@ -95,7 +95,7 @@ class following_fire(pygame.sprite.Sprite):
         self.count=0
 
         #fire image 불러옴
-        self.image=pygame.image.load("tile/fire_follow.png").convert_alpha()
+        self.image=pygame.image.load("tile/fire.png").convert_alpha()
         self.image=pygame.transform.scale(self.image,(20,20))
 
         self.mask=pygame.mask.from_surface(self.image)
@@ -106,14 +106,14 @@ class following_fire(pygame.sprite.Sprite):
 
         if self.first is True or abs(game.player.rect.x-self.rect.x)>200:
             self.rect.x=game.player.rect.x+random.randrange(-80,-40)
-            self.rect.y=game.player.rect.y+random.randrange(-20,20)
+            self.rect.y=game.player.rect.y+random.randrange(-10,10)
             self.first=False
         elif self.first is False and self.count is not 60:
-            self.rect.x+=4
+            self.rect.x+=7.5
             self.rect.y+=random.randrange(-3,3)
         else:
             self.rect.x=game.player.rect.x+random.randrange(-80,-40)
-            self.rect.y=game.player.rect.y+random.randrange(-20,20)
+            self.rect.y=game.player.rect.y+random.randrange(-10,10)
             self.count=0
 
         #self와 배경의 땅과의 충돌 검사
@@ -130,3 +130,33 @@ class following_fire(pygame.sprite.Sprite):
         if hits_character:
             GAME_OVER=True
             return GAME_OVER
+
+class moving_arrow(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        #움직이는 창살
+        self.arrow_up=pygame.image.load("tile/platform_tile_064_long.png").convert_alpha()
+        self.arrow_up=pygame.transform.scale(self.arrow_up,(840,80))
+        self.arrow_up_turn=pygame.transform.flip(self.arrow_up,True,True)
+
+        #충돌 검사 위해 초기화
+        self.rect = self.arrow_up_turn.get_rect()
+        self.mask=pygame.mask.from_surface(self.arrow_up_turn)
+
+        self.rect.x=160
+        self.rect.y=40
+
+    def moving_arrow_player_detect(self,game):
+        global GAME_OVER
+        self.arrow_up_turn=pygame.transform.scale(self.arrow_up_turn,(840,40+game.background_.cnt))
+        self.mask=pygame.mask.from_surface(self.arrow_up_turn)
+
+        hits=pygame.sprite.spritecollide(self,game.player_sprite,False,pygame.sprite.collide_mask)
+
+        if hits and not game.down:
+            GAME_OVER=True
+            return GAME_OVER
+
+
+

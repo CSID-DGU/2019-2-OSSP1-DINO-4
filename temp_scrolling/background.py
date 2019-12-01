@@ -45,7 +45,14 @@ class background:
         self.water=pygame.image.load("tile/fire-flames.png").convert_alpha()
         self.water=pygame.transform.scale(self.water,(40,40))
 
-        self.cnt=1
+        #움직이는 창살
+        self.arrow_up=pygame.image.load("tile/platform_tile_064_long.png").convert_alpha()
+        self.arrow_up=pygame.transform.scale(self.arrow_up,(840,80))
+        self.arrow_up_turn=pygame.transform.flip(self.arrow_up,True,True)
+
+        #창살 움직이는거 제어
+        self.cnt=0
+        self.growing=True
 
     def background_blit(self,game):
         #background
@@ -76,7 +83,7 @@ class background:
         game.screen.blit(self.arrow,RelRect(360,620,40,20,game.camera))
 
         if game.BUTTON_ON1 is False:
-            for i in range (0,6):
+            for i in range (0,13):
                 game.screen.blit(self.arrow,RelRect(1840+(40*i),1420,40,20,game.camera))
         else:
             for i in range (0,3):
@@ -106,7 +113,21 @@ class background:
         game.screen.blit(self.arrow_turn,RelRect(2320+(40*16),720,40,20,game.camera))
         game.screen.blit(self.arrow_turn,RelRect(2320+(40*17),720,40,20,game.camera))
 
+        #창살 제어
+        if self.growing==True:
+            self.cnt+=15
+            self.arrow_up_turn=pygame.transform.scale(self.arrow_up_turn,(840,40+self.cnt))
+            game.screen.blit(self.arrow_up_turn,RelRect(160,40,840,40+self.cnt,game.camera))
+            if self.cnt==180:
+                self.growing=False
+        elif self.growing==False:
+            self.cnt-=15
+            self.arrow_up_turn=pygame.transform.scale(self.arrow_up_turn,(840,40+self.cnt))
+            game.screen.blit(self.arrow_up_turn,RelRect(160,40,840,40+self.cnt,game.camera))
+            if self.cnt==0:
+                self.growing=True
         
+
         #박스
         if game.BUTTON_ON1==True:
             game.screen.blit(self.box,RelRect(2360,1240,320,200,game.camera))

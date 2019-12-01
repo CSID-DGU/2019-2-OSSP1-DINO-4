@@ -114,7 +114,7 @@ class Game:
 
 
     def main(self):
-        global GAME_OVER_FIRE,GAME_OVER_ARROW
+        global GAME_OVER_FIRE,GAME_OVER_ARROW,GAME_OVER_MOVING_ARROW
         #spite_group 정의
         self.all_sprite=pygame.sprite.Group()
         self.player_sprite=pygame.sprite.Group()
@@ -130,6 +130,7 @@ class Game:
         fire_bomb2=bomb(self) #폭탄2
         fire_bomb3=bomb(self) #폭탄3
         self.shot_=shot(self) #총알
+        self.moving_arrow_1=moving_arrow() #움직이는 창살
 
 
         #아이템
@@ -192,9 +193,9 @@ class Game:
         TEXT_COLOR=(0,0,0)
         BG_COLOR=(255,255,255)
         while True:
-            print(self.player.rect.x,self.player.rect.y)
+            #print(self.player.rect.x,self.player.rect.y)
             #Gameover
-            if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW:
+            if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW:
                 gameover_.show_gameover_screen(self.score,self.dir)
                 #재초기화
                 self.up=False
@@ -236,11 +237,12 @@ class Game:
                 self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
                     self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,\
                         self.arrow_trap14)
+                self.world.append(self.button1)
 
                 self.start_time=pygame.time.get_ticks()
                 self.gameover=False
                 GAME_OVER_FIRE=False
-
+                GAME_OVER_MOVING_ARROW=False
                 GAME_OVER_ARROW=False
 
             #player 좌표 확인
@@ -293,7 +295,9 @@ class Game:
             if self.BUTTON_ON1 is True:
                 self.arrow_sprites.remove(self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,self.arrow_trap8,self.arrow_trap9,\
                 self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,self.arrow_trap14)
-            
+
+            #움직이는 창살 제어
+            GAME_OVER_MOVING_ARROW=self.moving_arrow_1.moving_arrow_player_detect(self)
             GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
 
             #점수 환산
