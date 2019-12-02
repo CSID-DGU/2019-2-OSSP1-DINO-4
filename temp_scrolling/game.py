@@ -15,6 +15,8 @@ from item import *
 from dino import *
 from button_detect import *
 from os import path
+from username import *
+from s3_transfer import *
 
 import time
 import face_recog
@@ -193,7 +195,7 @@ class Game:
         self.world = level.world
         self.player = level.player
 
-        
+
         #sprite 그룹에 sprite 추가
         self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2,self.arrow_trap3,self.arrow_trap4,self.arrow_trap5,self.arrow_trap6,\
             self.arrow_trap7,self.arrow_trap8,self.arrow_trap9,self.arrow_trap10,self.arrow_trap11,self.arrow_trap12,self.arrow_trap13,self.arrow_trap14)
@@ -201,13 +203,19 @@ class Game:
         self.dino_group1.add(self.dino_1)
         self.dino_group2.add(self.dino_2)
 
+        #sprite 그룹에 sprite 추가
+        self.arrow_sprites.add(self.arrow_trap1,self.arrow_trap2)
+        self.world.append(self.button1)
+
         #함수정의
         pygame.init()
 
         self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
         FONT = pygame.font.SysFont("Sans", 20)
         gameover_=gameover(self.screen,clock,self.highscore,FONT)
+        username_=username(self.screen,self.highscore,FONT)
         face=face_recog.face(self)
+
 
         #시간 표시 글자색
         TEXT_COLOR=(0,0,0)
@@ -216,6 +224,7 @@ class Game:
             #print(self.player.rect.x,self.player.rect.y)
             #Gameover
             if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW or GAME_END:
+                self.user_name=username_.show_username_screen(self.score,self.dir)
                 gameover_.show_gameover_screen(self.score,self.dir)
                 #재초기화
                 self.up=False
@@ -345,12 +354,17 @@ class Game:
             #문 제어
             GAME_END=self.background_.door_open(self)
 
+            #창살제어
+            GAME_OVER_ARROW=self.arrow_trap1.arrow_player_detect()
+
             #점수 환산
             if self.start_time:
                 time_since_enter=pygame.time.get_ticks()-self.start_time
                 message='Score: '+str(time_since_enter)+'ms'
                 self.screen.blit(FONT.render(message, True, TEXT_COLOR), (10, 10))
                 self.score=time_since_enter
+
+
 
             #일시정지 버튼
             buttonPressed=gameover_.button("Pause",900,0,150,50,(103,153,255),(107,102,255),"paused")

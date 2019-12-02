@@ -13,7 +13,7 @@ class teleport(pygame.sprite.Sprite):
         self.ready=False
         self.player_state=0
 
-    
+
     #텔레포트 확인
     #한 class당 본인 sprite 하나라서 사용자 좌표 받아서 sprite 정함
     def sprite_def(self,game,player):
@@ -152,7 +152,7 @@ class teleport(pygame.sprite.Sprite):
                 game.player.movy+=30
             if self.player_state is 7:
                 game.player.movy-=27
-            
+
 
 class box(pygame.sprite.Sprite):
     def __init__(self):
@@ -167,7 +167,7 @@ class box(pygame.sprite.Sprite):
 
         self.rect.x=1880
         self.rect.y=960
-    
+
     def collide_detect(self,game,background):
         hits=pygame.sprite.spritecollide(self,game.player_sprite,False,pygame.sprite.collide_mask)
         if hits:

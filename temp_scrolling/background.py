@@ -95,14 +95,14 @@ class background:
         else:
             for i in range (0,3):
                 game.screen.blit(self.arrow,RelRect(1840+(200*i),1420,40,20,game.camera))
-        
+
 
         for i in range(0,28):
             game.screen.blit(self.water,RelRect(2240+(i*40),880,1120,20,game.camera))
 
         #문
         game.screen.blit(self.door,RelRect(3400,40,80,80,game.camera))
-        
+
 
         game.screen.blit(self.arrow_turn,RelRect(2320,840,40,20,game.camera))
         game.screen.blit(self.arrow_turn,RelRect(2320+40,840,40,20,game.camera))
@@ -123,6 +123,19 @@ class background:
         game.screen.blit(self.arrow_turn,RelRect(2320+(40*16),720,40,20,game.camera))
         game.screen.blit(self.arrow_turn,RelRect(2320+(40*17),720,40,20,game.camera))
 
+
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+        game.screen.blit(self.arrow,RelRect(1840,1420,40,20,game.camera))
+
         #창살 제어
         if self.growing==True:
             self.cnt+=15
@@ -136,7 +149,7 @@ class background:
             game.screen.blit(self.arrow_up_turn,RelRect(160,40,840,40+self.cnt,game.camera))
             if self.cnt==0:
                 self.growing=True
-        
+
 
         #박스
         if game.BUTTON_ON1==True:
@@ -161,3 +174,16 @@ class background:
         if self.timer==5:
             GAME_OVER=True
             return GAME_OVER
+
+
+        def button_on_draw(self,game):
+            for i in range 8:
+                game.screen.blit(self.box,RelRect(2360+i,1400,40,40,game.camera))
+            for i in range 7:
+                game.screen.blit(self.box,RelRect(2400+i,1440,40,40,game.camera))
+            for i in range 6:
+                game.screen.blit(self.box,RelRect(2440+i,1480,40,40,game.camera))
+            for i in range 5:
+                game.screen.blit(self.box,RelRect(2480+i,1520,40,40,game.camera))
+            for i in range 3:
+                game.screen.blit(self.box,RelRect(2540+i,1560,40,40,game.camera))
