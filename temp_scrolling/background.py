@@ -50,9 +50,16 @@ class background:
         self.arrow_up=pygame.transform.scale(self.arrow_up,(840,80))
         self.arrow_up_turn=pygame.transform.flip(self.arrow_up,True,True)
 
+        #문
+        self.door=pygame.image.load("tile/New Piskel (1) (1).png").convert_alpha()
+        self.door=pygame.transform.scale(self.door,(80,80))
+
         #창살 움직이는거 제어
         self.cnt=0
         self.growing=True
+
+        #문 열리는거 제어
+        self.timer=0
 
     def background_blit(self,game):
         #background
@@ -92,6 +99,9 @@ class background:
 
         for i in range(0,28):
             game.screen.blit(self.water,RelRect(2240+(i*40),880,1120,20,game.camera))
+
+        #문
+        game.screen.blit(self.door,RelRect(3400,40,80,80,game.camera))
         
 
         game.screen.blit(self.arrow_turn,RelRect(2320,840,40,20,game.camera))
@@ -141,5 +151,13 @@ class background:
         game.screen.blit(self.red_up,RelRect(2000,840,40,80,game.camera))
         game.screen.blit(self.blue_up,RelRect(1800,80,40,80,game.camera))
         game.screen.blit(self.blue_down,RelRect(1680,1130,40,80,game.camera))
+        game.screen.blit(self.green_down,RelRect(3400,530,80,40,game.camera))
 
+    def door_open(self,game):
+        global GAME_OVER
+        if(game.player.rect.x>=3410 and game.player.rect.x<=3430):
+            self.timer+=0.5
 
+        if self.timer==5:
+            GAME_OVER=True
+            return GAME_OVER
