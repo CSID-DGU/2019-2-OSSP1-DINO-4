@@ -42,7 +42,7 @@ class bomb(pygame.sprite.Sprite):
             fire[0]=random.randrange(1800,2400)
             fire[1]=1200
             game.screen.blit(self.image,RelRect(fire[0],fire[1],20,20,game.camera))
-        
+
         #충돌하지 않음
         else:
             if fire[1]>1440:
@@ -157,6 +157,3 @@ class moving_arrow(pygame.sprite.Sprite):
         if hits and not game.down:
             GAME_OVER=True
             return GAME_OVER
-
-
-

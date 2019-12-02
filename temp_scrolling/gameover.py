@@ -3,6 +3,7 @@ import pygame
 from os import path
 from background_platform import *
 from background import *
+from s3_transfer import *
 
 SCREEN_WIDTH=1000
 SCREEN_HEIGHT=700
@@ -10,6 +11,9 @@ SCREEN_HEIGHT=700
 class gameover:
     def __init__(self,screen,clock,highscore,FONT):
         super().__init__()
+
+        #high score transfer to s3
+        #self.transfer_=transfer()
 
         self.screen=screen
         self.clock=clock
@@ -20,6 +24,7 @@ class gameover:
         self.highscore=highscore
         self.score=0
         self.numOfPressedButton=0
+        self.username=0
 
         self.bg_sky=pygame.image.load("tile/sky.png").convert_alpha()
         self.bg_sky=pygame.transform.scale(self.bg_sky,(1000,700))
@@ -169,8 +174,14 @@ class gameover:
             self.draw_text(self.screen,">Highest Score: "+str(self.score),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
             with open(path.join(self.dir,HS_FILE),'w') as f:
                 f.write(str(self.score))
+                f.write("dino")
+            #aws s3 스토리지에 업로드
+            upload_s3_now()
         else:
             self.draw_text(self.screen,">Highest Score: "+str(self.highscore),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
+            #aws s3 스토리지에 업로드
+            upload_s3_now()
+            
         pygame.display.flip()
 
         #start_time=None #gameover이므로
