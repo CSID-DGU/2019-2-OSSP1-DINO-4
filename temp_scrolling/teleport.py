@@ -101,6 +101,20 @@ class teleport(pygame.sprite.Sprite):
             self.ready=True
             self.player_state=6
 
+        #초록색
+        if player.rect.x>=2670 and player.rect.x<=3500 and player.rect.y>=500 and player.rect.y<=650:
+            self.image=pygame.image.load("tile/green_neon.png").convert_alpha()
+            self.image=pygame.transform.scale(self.image,(80,40))
+
+            self.rect=self.image.get_rect()
+            self.mask=pygame.mask.from_surface(self.image)
+
+            self.rect.x=3400
+            self.rect.y=530
+
+            self.ready=True
+            self.player_state=7
+
 
     def collide_detect(self,game):
         hits=pygame.sprite.spritecollide(self,game.player_sprite,False,pygame.sprite.collide_mask)
@@ -136,6 +150,8 @@ class teleport(pygame.sprite.Sprite):
                 game.player.rect.x=1680
                 game.player.rect.y=1135
                 game.player.movy+=30
+            if self.player_state is 7:
+                game.player.movy-=27
             
 
 class box(pygame.sprite.Sprite):

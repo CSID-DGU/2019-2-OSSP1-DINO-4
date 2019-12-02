@@ -99,7 +99,10 @@ class Game:
         self.player1.user_position[1]=self.player1.rect.y
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> character
     #network로 data 전송
     def send_data(self):
         """
@@ -110,6 +113,9 @@ class Game:
         reply = self.net.send(data)
         return reply
 
+<<<<<<< HEAD
+>>>>>>> character
+=======
 >>>>>>> character
     #전송할 데이터를 parse하는 함수
     def parse_data(self,data):
@@ -140,6 +146,10 @@ class Game:
         self.player1=Player(self)
         self.player2=Player(self)# 추가
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        self.net=Network()
+>>>>>>> character
 =======
         self.net=Network()
 >>>>>>> character
@@ -188,7 +198,10 @@ class Game:
         n=Network()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> character
         #2플레이어 게임 연결
         try:
             game = n.send("get")
@@ -196,6 +209,9 @@ class Game:
             run = False
             print("Couldn't get game")
 
+<<<<<<< HEAD
+>>>>>>> character
+=======
 >>>>>>> character
         while True:
 
@@ -285,15 +301,21 @@ class Game:
                 self.player1.rect.left=0
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             #self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
 
             #self.player2.update_sprite(self.screen,self)#추가ㄹ
             #self.player2.update()
 =======
+=======
+>>>>>>> character
             self.player2.rect.x,self.player2.rect.y=self.parse_data(self.send_data())
 
             self.player2.update_sprite(self.screen,self)#추가ㄹ
             self.player2.update()
+<<<<<<< HEAD
+>>>>>>> character
+=======
 >>>>>>> character
             self.player1.update_sprite(self.screen,self)
             self.all_sprites.update()
@@ -303,11 +325,19 @@ class Game:
                 self.remove_platform_.draw(self.screen)
 
             #얼굴 인식
+<<<<<<< HEAD
             mouthOpen=face.face_recognition(self.screen)
             item_.item_eat_red2(self.screen,mouthOpen)
             item_.item_eat_red3(self.screen,mouthOpen)
             item_.item_eat_red4(self.screen,mouthOpen)
             item_.item_eat_red1(self.screen,mouthOpen)
+=======
+            #mouthOpen=face.face_recognition(self.screen)
+            #item_.item_eat_red2(self.screen,mouthOpen)
+            #item_.item_eat_red3(self.screen,mouthOpen)
+            #item_.item_eat_red4(self.screen,mouthOpen)
+            #item_.item_eat_red1(self.screen,mouthOpen)
+>>>>>>> character
             pygame.display.flip()
 
             for event in pygame.event.get():

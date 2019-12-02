@@ -13,7 +13,7 @@ class player(pygame.sprite.Sprite):
         self.movx=0
         self.movy=0
 
-        self.vel=10 #가속도
+        self.vel=15 #가속도
 
         #땅과 충돌검사
         self.contact = False

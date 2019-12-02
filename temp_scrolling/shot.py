@@ -32,14 +32,14 @@ class shot(pygame.sprite.Sprite):
             self.shot_image=pygame.transform.flip(self.shot_image,True,False)
             self.rect.x=x
             self.rect.y=y
-            self.speed=-8
+            self.speed=-12
             self.mask=pygame.mask.from_surface(self.shot_image)
         else:
             self.shot_image=pygame.image.load("bullet.png").convert_alpha()
             self.shot_image=pygame.transform.scale(self.shot_image,(30,30))
             self.rect.x=x
             self.rect.y=y
-            self.speed=8
+            self.speed=12
             self.mask=pygame.mask.from_surface(self.shot_image)
 
         self.bullet_state="fire"
@@ -59,18 +59,27 @@ class shot(pygame.sprite.Sprite):
             self.bullet_state="ready"
         else:
             #총알 창 밖으로 나가면 초기화
-            if self.rect.x>=3000 or self.rect.x<0:
+            if self.rect.x>=6000 or self.rect.x<0:
                 self.bullet_state="ready"
             #총알 날림
             if self.bullet_state is "fire":
                 self.game.screen.blit(self.shot_image,RelRect(self.rect.x,self.rect.y,30,30,self.game.camera))
                 self.rect.x+=self.speed
 
-"""  
-    def shoot_dino(self,game):
-        hit_dino=pygame.sprite.spritecollide(self,self.game.dino_group,False,pygame.sprite.collide_mask)
-
-        if hit_dino:
+    def shoot_dino1(self,game):
+        hit_dino1=pygame.sprite.spritecollide(self,game.dino_group1,False,pygame.sprite.collide_mask)
+        
+        if hit_dino1:
             self.bullet_state="ready"
-            game.DINO_alive=False
-"""
+            print("hit_dino1")
+            game.DINO_alive1=False
+            game.dino_group1.remove(game.dino_1)
+    
+    def shoot_dino2(self,game):
+        hit_dino2=pygame.sprite.spritecollide(self,game.dino_group2,False,pygame.sprite.collide_mask)
+        
+        if hit_dino2:
+            print("hit_dino2")
+            self.bullet_state="ready"
+            game.DINO_alive2=False
+            game.dino_group2.remove(game.dino_2)
