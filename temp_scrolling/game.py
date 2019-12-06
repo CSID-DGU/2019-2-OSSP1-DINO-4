@@ -27,6 +27,11 @@ global time_spent
 
 #shot.py에 #총알 창 밖으로 나가면 초기화부분 맵 최종결정난 후 수정 필요
 
+GAME_OVER_FIRE=False
+GAME_OVER_ARROW=False
+GAME_OVER_MOVING_ARROW=False
+GAME_END=False
+
 def RelRect(x,y,w,h,camera):
     return pygame.Rect(x-camera.rect.x, y-camera.rect.y, w, h)
 
@@ -56,7 +61,7 @@ class Game:
         self.background=pygame.transform.scale(self.background,(1000,700))
         self.background_rect = self.background.get_rect()
 
-        self.load_data() #high score data load
+        #self.load_data() #high score data load
         self.score=0
         self.start_time=0
 
@@ -65,7 +70,8 @@ class Game:
         self.fire_rect2=[2000,1200]
         self.fire_Rect3=[2100,1200]
 
-        self.gameover=True
+        self.gameStart=True
+        self.gameover=False
 
         self.DINO_alive1=True
         self.DINO_alive2=True
@@ -74,7 +80,9 @@ class Game:
         self.box2_hit=False
         self.box3_hit=False
 
+        self.dir=path.dirname(__file__)
 
+    """
     #high score data load
     def load_data(self):
         HS_FILE="highscore.txt"
@@ -83,7 +91,7 @@ class Game:
             try:
                 self.highscore=int(f.read())
             except:
-                self.highscore=0
+                self.highscore=0"""
 
 
     def tps(self,orologio,fps):
@@ -212,8 +220,8 @@ class Game:
 
         self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
         FONT = pygame.font.SysFont("Sans", 20)
-        gameover_=gameover(self.screen,clock,self.highscore,FONT)
-        username_=username(self.screen,self.highscore,FONT)
+        gameover_=gameover(self.screen,clock,FONT)
+        username_=username(self.screen)
         face=face_recog.face(self)
 
 
@@ -223,7 +231,11 @@ class Game:
         while True:
             #print(self.player.rect.x,self.player.rect.y)
             #Gameover
-            if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW or GAME_END:
+            if self.gameStart:
+                gameover_.show_gameover_screen(self.score,self.dir)
+                self.start_time=pygame.time.get_ticks()
+                self.gameStart=False
+            elif self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW or GAME_END:
                 self.user_name=username_.show_username_screen(self.score,self.dir)
                 gameover_.show_gameover_screen(self.score,self.dir)
                 #재초기화

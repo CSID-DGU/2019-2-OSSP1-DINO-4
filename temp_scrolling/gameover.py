@@ -9,7 +9,7 @@ SCREEN_WIDTH=1000
 SCREEN_HEIGHT=700
 
 class gameover:
-    def __init__(self,screen,clock,highscore,FONT):
+    def __init__(self,screen,clock,FONT):
         super().__init__()
 
         #high score transfer to s3
@@ -21,7 +21,7 @@ class gameover:
         self.WHITE=(255,255,255)
         self.ORANGE=(255,193,158)
         self.textRect=self.textRect=self.text_objects("Instruction",FONT)
-        self.highscore=highscore
+        #self.highscore=highscore
         self.score=0
         self.numOfPressedButton=0
         self.username=0
@@ -118,7 +118,7 @@ class gameover:
             self.clock.tick(30)
 
     def show_gameover_screen(self,score,dir):
-        HS_FILE="highscore.txt"
+        #HS_FILE="highscore.txt"
         self.score=score
         self.dir=dir
 
@@ -166,7 +166,8 @@ class gameover:
         self.draw_text(self.screen,"DINO",100,SCREEN_WIDTH/2,SCREEN_HEIGHT/7)
         self.draw_text(self.screen,">Arrow keys move, Space to fire",22,SCREEN_WIDTH/2+55,SCREEN_HEIGHT/2+100)
         self.draw_text(self.screen,">Press a key to begin",22,SCREEN_WIDTH/2+15,SCREEN_HEIGHT*3/4)
-
+        
+        """
         #SCORE 관련 표시하기
         if self.score>self.highscore:
             self.highscore=self.score
@@ -180,7 +181,7 @@ class gameover:
         else:
             self.draw_text(self.screen,">Highest Score: "+str(self.highscore),22,SCREEN_WIDTH/2,SCREEN_HEIGHT/2+250)
             #aws s3 스토리지에 업로드
-            upload_s3_now()
+            upload_s3_now()"""
             
         pygame.display.flip()
 
