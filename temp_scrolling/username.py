@@ -1,6 +1,7 @@
 import pygame
 import os
 
+from db import *
 from os import path
 from background_platform import *
 from background import *
@@ -12,11 +13,13 @@ SCREEN_HEIGHT=700
 validChars = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./"
 shiftChars = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?'
 
+"""
 class Score:
     def __init__(self):
         super().__init__()
 
     def get_high_scores(self,file_name):
+        #메모장
         content = ""
 
         HS_FILE=file_name
@@ -58,6 +61,8 @@ class Score:
         f.close() #close the file
 
     def set_high_score(self,file_name, player_name, score):
+    
+    
         scores = self.get_high_scores(file_name) #get a dictionary of the current high scores
         print(scores['first'][1]+","+scores['second'][1]+","+scores['third'][1])
         print(int(score))
@@ -90,10 +95,12 @@ class Score:
             scores['third'][0] = player_name
             scores['third'][1] = score
 
-        self.write_high_scores(file_name, scores)
+        #self.write_high_scores(file_name, scores)
         #print(scores)
 
         return scores
+"""
+
 
 
 class username:
@@ -130,7 +137,7 @@ class username:
         self.grass_left=pygame.image.load("tile/grass_left.png").convert_alpha()
         self.grass_left=pygame.transform.scale(self.grass_left,(50,60))
 
-        self.old_rect_pos = (SCREEN_WIDTH/2,SCREEN_HEIGHT/3)
+        self.old_rect_pos = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         self.text = ""
         self.font = pygame.font.Font(None,60)
         self.image = self.font.render("Enter your name", 0, [0, 0, 0])
@@ -139,7 +146,7 @@ class username:
         self.scores=None
 
 
-        self.score_=Score()
+        #self.score_=Score()
 
 
     def add_chr(self, char):
@@ -163,6 +170,12 @@ class username:
         text_rect.midtop=(x,y)
         surf.blit(text_surface,text_rect)
 
+    def print_ranking(self):
+        rank=show_ranking()
+        self.draw_text(self.screen,"1st :"+str(rank[0][1])+"("+str(rank[0][2])+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3)
+        self.draw_text(self.screen,"2nd :"+str(rank[1][1])+"("+str(rank[1][2])+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+50)
+        self.draw_text(self.screen,"3rd :"+str(rank[2][1])+"("+str(rank[2][2])+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+100)
+
     def show_username_screen(self,score,dir):
         HS_FILE="highscore.txt"
         clock = pygame.time.Clock()
@@ -170,7 +183,7 @@ class username:
         textBox=username(self.screen)
         shiftDown = False
         self.dir=dir
-        textBox.rect.center = [SCREEN_WIDTH/2, SCREEN_HEIGHT/7+300]
+        textBox.rect.center = [SCREEN_WIDTH/2, SCREEN_HEIGHT/2]
         #self.screen.fill((67,116,217))
 
 
@@ -183,14 +196,18 @@ class username:
             self.draw_text(self.screen,"Your Score:",60,SCREEN_WIDTH/2,SCREEN_HEIGHT/10)
             self.draw_text(self.screen,self.score,60,SCREEN_WIDTH/2,SCREEN_HEIGHT/10+70)
 
-            if self.scores is None:
+            """
+            if os.path.isfile(HS_FILE):
                 self.draw_text(self.screen,"1st : ",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3)
                 self.draw_text(self.screen,"2nd :",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+50)
                 self.draw_text(self.screen,"3rd :",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+100)
             else:
                 self.draw_text(self.screen,"1st :"+self.scores['first'][0]+"("+self.scores['first'][1]+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3)
                 self.draw_text(self.screen,"2nd :"+self.scores['second'][0]+"("+self.scores['second'][1]+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+50)
-                self.draw_text(self.screen,"3rd :"+self.scores['third'][0]+"("+self.scores['third'][1]+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+100)
+                self.draw_text(self.screen,"3rd :"+self.scores['third'][0]+"("+self.scores['third'][1]+" seconds)",40,SCREEN_WIDTH/2,(SCREEN_HEIGHT/5)*3+100)"""
+
+            self.print_ranking()
+            
             pygame.display.flip()
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
@@ -212,8 +229,8 @@ class username:
                         if len(textBox.text) > 0:
                         #print (textBox.text)
                             running = False
-                            self.scores=self.score_.set_high_score("highscore.txt",textBox.text,self.score)
- 
+                            insert_score(textBox.text,self.score)
+
 
         """
         print("setl.txt해봄")
