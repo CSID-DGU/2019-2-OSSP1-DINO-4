@@ -168,12 +168,13 @@ class background:
 
     def door_open(self,game):
         global GAME_OVER
-        if(game.player.rect.x>=3410 and game.player.rect.x<=3430):
+        if(game.player.rect.x>=3410 and game.player.rect.x<=3430 and game.player.rect.y==70):
             self.timer+=0.5
 
         if self.timer==5:
             GAME_OVER=True
             return GAME_OVER
+<<<<<<< HEAD:temp_scrolling/background.py
 '''
 
     def button_on_draw(self,game):
@@ -188,3 +189,5 @@ class background:
         for i in range 3:
             game.screen.blit(self.box,RelRect(2540+i,1560,40,40,game.camera))
             '''
+=======
+>>>>>>> character:temp_scrolling(_db)/background.py
