@@ -27,11 +27,6 @@ global time_spent
 
 #shot.py에 #총알 창 밖으로 나가면 초기화부분 맵 최종결정난 후 수정 필요
 
-GAME_OVER_FIRE=False
-GAME_OVER_ARROW=False
-GAME_OVER_MOVING_ARROW=False
-GAME_END=False
-
 def RelRect(x,y,w,h,camera):
     return pygame.Rect(x-camera.rect.x, y-camera.rect.y, w, h)
 
@@ -61,7 +56,7 @@ class Game:
         self.background=pygame.transform.scale(self.background,(1000,700))
         self.background_rect = self.background.get_rect()
 
-        #self.load_data() #high score data load
+        self.load_data() #high score data load
         self.score=0
         self.start_time=0
 
@@ -70,8 +65,7 @@ class Game:
         self.fire_rect2=[2000,1200]
         self.fire_Rect3=[2100,1200]
 
-        self.gameStart=True
-        self.gameover=False
+        self.gameover=True
 
         self.DINO_alive1=True
         self.DINO_alive2=True
@@ -80,9 +74,7 @@ class Game:
         self.box2_hit=False
         self.box3_hit=False
 
-        self.dir=path.dirname(__file__)
 
-    """
     #high score data load
     def load_data(self):
         HS_FILE="highscore.txt"
@@ -91,7 +83,7 @@ class Game:
             try:
                 self.highscore=int(f.read())
             except:
-                self.highscore=0"""
+                self.highscore=0
 
 
     def tps(self,orologio,fps):
@@ -100,7 +92,7 @@ class Game:
         return tps
 
     #key event처리
-    def event(self):
+    def event(self,eyebrow):
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -220,15 +212,9 @@ class Game:
 
         self.camera = Camera(self.screen, self.player.rect, level.get_size()[0], level.get_size()[1])
         FONT = pygame.font.SysFont("Sans", 20)
-<<<<<<< HEAD:temp_scrolling/game.py
         gameover_=gameover(self.screen,clock,self.highscore,FONT)
         username_=username(self.screen,self.highscore,FONT)
-        face=face_recog.face(self,self.screen)
-=======
-        gameover_=gameover(self.screen,clock,FONT)
-        username_=username(self.screen)
         face=face_recog.face(self)
->>>>>>> character:temp_scrolling(_db)/game.py
 
 
         #시간 표시 글자색
@@ -237,11 +223,7 @@ class Game:
         while True:
             #print(self.player.rect.x,self.player.rect.y)
             #Gameover
-            if self.gameStart:
-                gameover_.show_gameover_screen(self.score,self.dir)
-                self.start_time=pygame.time.get_ticks()
-                self.gameStart=False
-            elif self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW or GAME_END:
+            if self.gameover or GAME_OVER_FIRE or GAME_OVER_ARROW or GAME_OVER_MOVING_ARROW or GAME_END:
                 self.user_name=username_.show_username_screen(self.score,self.dir)
                 gameover_.show_gameover_screen(self.score,self.dir)
                 #재초기화
@@ -301,9 +283,7 @@ class Game:
                 GAME_OVER_ARROW=False
                 GAME_END=False
 
-            #player 좌표 확인
-            #print(self.player.rect.x,self.player.rect.y)
-            self.event()
+
 
             #화면 이동
             asize = ((self.screen_rect.w // self.background_rect.w + 1) * self.background_rect.w, (self.screen_rect.h // self.background_rect.h + 1) * self.background_rect.h)
@@ -319,10 +299,6 @@ class Game:
 
             time_spent = self.tps(clock, FPS)
             self.camera.draw_sprites(self.screen, self.all_sprite)
-
-            #얼굴 인식 화면에 표시
-            self.frame=face.getCamFrame(face.color,face.camera)
-            self.screen=face.blitCamFrame(self.frame,self.screen)
 
             #순간이동
             teleport_.sprite_def(self,self.player)
@@ -399,7 +375,8 @@ class Game:
                 break
 
             #얼굴인식
-            mouthOpen=face.face_recognition(self.screen,self.frame)
+            mouthOpen=face.face_recognition(self.screen)
+            eyebrow=face.eyebrowDetection(self.screen)
             #아이템
             item1.draw_item(self,2400,1200,mouthOpen)
             item2.draw_item(self,400,600,mouthOpen)
@@ -414,11 +391,14 @@ class Game:
             item11.draw_item(self,2550,1350,mouthOpen)
             if self.box3_hit is True:
                 item12.draw_item(self,3160,360,mouthOpen)
-            
+
+            #player 좌표 확인 ##좌표 확인
+            #print(self.player.rect.x,self.player.rect.y)
+            self.event(eyebrow)
+
+            #print(mouthOpen)
+
             #배경 update
             self.player.update(self,self.up,self.down,self.left, self.right)
             self.camera.update()
-
-            
-            
             pygame.display.flip()

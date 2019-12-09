@@ -74,7 +74,6 @@ class shot(pygame.sprite.Sprite):
             print("hit_dino1")
             game.DINO_alive1=False
             game.dino_group1.remove(game.dino_1)
-            
     
     def shoot_dino2(self,game):
         hit_dino2=pygame.sprite.spritecollide(self,game.dino_group2,False,pygame.sprite.collide_mask)
