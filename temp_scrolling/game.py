@@ -214,7 +214,7 @@ class Game:
         FONT = pygame.font.SysFont("Sans", 20)
         gameover_=gameover(self.screen,clock,self.highscore,FONT)
         username_=username(self.screen,self.highscore,FONT)
-        face=face_recog.face(self)
+        face=face_recog.face(self,self.screen)
 
 
         #시간 표시 글자색
@@ -302,6 +302,10 @@ class Game:
             time_spent = self.tps(clock, FPS)
             self.camera.draw_sprites(self.screen, self.all_sprite)
 
+            #얼굴 인식 화면에 표시
+            self.frame=face.getCamFrame(face.color,face.camera)
+            self.screen=face.blitCamFrame(self.frame,self.screen)
+
             #순간이동
             teleport_.sprite_def(self,self.player)
             if(teleport_.ready==True):
@@ -377,7 +381,7 @@ class Game:
                 break
 
             #얼굴인식
-            mouthOpen=face.face_recognition(self.screen)
+            mouthOpen=face.face_recognition(self.screen,self.frame)
             #아이템
             item1.draw_item(self,2400,1200,mouthOpen)
             item2.draw_item(self,400,600,mouthOpen)
@@ -392,12 +396,11 @@ class Game:
             item11.draw_item(self,2550,1350,mouthOpen)
             if self.box3_hit is True:
                 item12.draw_item(self,3160,360,mouthOpen)
-
-
-
-            #print(mouthOpen)
-
+            
             #배경 update
             self.player.update(self,self.up,self.down,self.left, self.right)
             self.camera.update()
+
+            
+            
             pygame.display.flip()

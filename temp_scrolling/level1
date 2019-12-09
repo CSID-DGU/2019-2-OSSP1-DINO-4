@@ -12,11 +12,15 @@ GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG   G              G             G                 
                              GGGGGGGGGGGGGGGGGGGG                                      7
                                                 7                                      7
 <<<<<<< HEAD
+<<<<<<< HEAD
     GGG              XXX                        7  P                                   7  
     GGG                                 X       7111111111111111111111111111111111111117                                          
     GGG      E                          X       73                                     7    
 =======
     GGG              XXX                        7                                      7
+=======
+    GGG              XXX                        7  P                                   7
+>>>>>>> 254bec6597388500805e0222e51b3fb35b38b91e
     GGG                                 X       7111111111111111111111111111111111111117
     GGG      E                          X       73                                     7
 >>>>>>> 348af153204ee370907bcd911a1666ae7aded732
