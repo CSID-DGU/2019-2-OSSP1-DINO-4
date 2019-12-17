@@ -15,11 +15,11 @@
 * [dlib 설치방법](https://sulastri.tistory.com/3)
 * 게임 내 랭킹 기능을 사용하고 싶다면
   * 아래의 형식에 맞는 'ranking'테이블을 생성합니다.
-  |Column Name|Datatype   |PK|AI|
-  |-----------|-----------|--|--|
-  |num        |INT(11)    |Y |Y |
-  |name       |VARCHAR(45)|  |  |
-  |score      |INT(11)    |  |  |
+  | Column Name | Datatype | PK | AI |
+  |:---:|:---:|:---:|:---:|
+  | num | INT(11) |Y |Y |
+  | name | VARCHAR(45) |  |  |
+  | score | INT(11) |  |  |
   * db.py의 line3에 password를 수정합니다.
 * 게임 내 랭킹 기능을 사용하기 싶지 않다면
   * 아래를 참고하고 해당 부분을 주석처리 합니다.
